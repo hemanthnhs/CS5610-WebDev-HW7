@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Timesheets · Home work 6</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+  </head>
+  <body>
+    <div class="container">
+          <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+            <div class="col-3">
+              <a class="navbar-brand" href="/">Timesheets</a>
+            </div>
+            <div class="col-5">
+            <%= if @current_user do %>
+                  <ul class="navbar-nav mr-auto">
+                    <%= if @current_user.is_manager do %>
+                    <li class="nav-item">
+                      <%= link("Manage Sheets Data", class: "nav-link", to: Routes.sheet_path(@conn, :index)) %>
+                    </li>
+                    <li class="nav-item">
+                      <%= link("View Jobs", class: "nav-link", to: Routes.job_path(@conn, :index)) %>
+                    </li>
+                    <li class="nav-item">
+                      <%= link("Create Job", class: "nav-link", to: Routes.job_path(@conn, :new)) %>
+                    </li>
+                  <% else %>
+                      <li class="nav-item">
+                        <%= link("Fill New Sheet", class: "nav-link", to: Routes.sheet_path(@conn, :new)) %>
+                      </li>
+                      <li class="nav-item">
+                        <%= link("Submitted Sheets", class: "nav-link", to: Routes.sheet_path(@conn, :index)) %>
+                      </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+            <div class="col-4 text-light">
+                  <%= if @current_user do %>
+                    Logged as : <%= @current_user.name %>
+                    (<%= link("Logout", class: "text-light", to: Routes.session_path(@conn, :delete),
+                      method: :delete) %>)
+                  <% else %>
+                    <%= link("Login", class: "text-light", to: Routes.session_path(@conn, :new)) %>
+                  <% end %>
+            </div>
+           </nav>
+              <div class="row">
+                <div class="col-12">
+                  <%= if get_flash(@conn, :info) do %>
+                    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+                  <% end %>
+                  <%= if get_flash(@conn, :error) do %>
+                    <p class="alert alert-danger" role="alert">
+                      <%= get_flash(@conn, :error) %>
+                    </p>
+                  <% end %>
+                </div>
+              </div>
+          <%= render @view_module, @view_template, assigns %>
+        </div>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

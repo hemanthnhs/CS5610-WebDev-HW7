@@ -1,0 +1,64 @@
+<script>
+function warn_if_missing(){
+        let is_missing = false;
+        for(let i=1; i < 9; i++){
+            let jobVal = document.getElementById("sheet_job_id_"+i).value;
+            let hoursVal = document.getElementById("sheet_hours_"+i).value;
+            if((jobVal == "" && hoursVal != "") || (jobVal != "" && hoursVal == "")){
+                is_missing = true;
+            }
+        }
+        if(is_missing){
+            let choice = confirm("One or more rows in the sheet are partially filled. Only rows with job code and hours will be saved. Do you wish to proceed");
+            if(choice){
+                return true;
+            }
+            else{
+                event.preventDefault();
+                return false;
+            }
+        }
+    };
+</script>
+<%= form_for @changeset, @action, [onsubmit: "warn_if_missing()"], fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+      <%= error_tag f, :total_hours %>
+    </div>
+  <% end %>
+    <div class="form-group row" id="sheet-header">
+        <div class="col-5">
+            <span class="row">
+                <%= label f, :date, "Date", class: "col-1" %>
+                <%= date_input f, :date, class: "form-control col-9 offset-1", required: true%>
+            </span>
+            <%= error_tag f, :date %>
+        </div>
+        <%= submit "Submit Sheet", class: "btn btn-success offset-4 pull-right" %>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Job Code</th>
+          <th>Hours</th>
+          <th>Work Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for work_id <- (1..8) do %>
+        <tr>
+            <td>
+               <%= select f, String.to_atom("job_id_#{work_id}"), @jobs, prompt: "Select job code", class: "form-control col-10" %>
+            </td>
+            <td>
+                <%= number_input f, String.to_atom("hours_#{work_id}"), min: 1, max: 8, class: "form-control col-8" %>
+            </td>
+            <td>
+            <%= textarea f, String.to_atom("desc_#{work_id}"), class: "form-control log-notes" %>
+            </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+<% end %>

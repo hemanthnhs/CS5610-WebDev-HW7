@@ -1,0 +1,21 @@
+<%= form_for @changeset, @action, fn f -> %>
+
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+  <div class="form-group">
+      <%= label f, :jobname, "Job Code" %>
+      <%= text_input f, :jobname, class: "form-control", required: "true" %>
+      <%= error_tag f, :jobname %>
+  </div>
+  <div class="form-group">
+      <%= label f, :desc, "Description" %>
+      <%= textarea f, :desc, class: "form-control" %>
+  </div>
+  <div>
+    <span><%= submit "Submit", class: "btn btn-primary" %></span>
+    <span><%= link "Back to Jobs", class: "btn btn-outline-dark", to: Routes.job_path(@conn, :index) %></span>
+  </div>
+<% end %>

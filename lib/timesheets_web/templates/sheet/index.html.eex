@@ -1,0 +1,39 @@
+<%= if @conn.assigns[:current_user].is_manager do %>
+    <h1>Sheets Dashboard</h1>
+<% else %>
+    <h2>Submitted Time Sheets</h2>
+<% end %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <%= if @conn.assigns[:current_user].is_manager do %>
+         <th>Requested by</th>
+      <% end %>
+      <th>Work Date</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for sheet <- @sheets do %>
+    <tr>
+      <%= if @conn.assigns[:current_user].is_manager do %>
+        <td><%= sheet.user.name %></td>
+      <% end %>
+      <td><%= sheet.date %></td>
+      <td><%= if (sheet.approved) do "Approved" else "Pending Approval" end %></td>
+      <td>
+          <%= if @conn.assigns[:current_user].is_manager do %>
+              <span><%= link "View", class: "btn btn-primary", to: Routes.sheet_path(@conn, :show, sheet) %></span>
+              <%= if !sheet.approved do %>
+                  <span><%= link "Approve", class: "btn btn-success", to: Routes.sheet_path(@conn, :approve, %{:id => sheet.id}), method: :post  %></span>
+                  <span><%= link "Disapprove", class: "btn btn-danger", to: Routes.sheet_path(@conn, :delete, sheet), method: :delete, data: [confirm: "The timesheet will be disapproved and deleted. Are you sure?"] %></span>
+              <% end %>
+          <% else %>
+             <span><%= link "View", class: "btn btn-primary", to: Routes.sheet_path(@conn, :show, sheet) %></span>
+          <% end %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
