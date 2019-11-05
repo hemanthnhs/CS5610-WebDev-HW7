@@ -1,18 +1,21 @@
 defmodule Timesheets.Users.User do
   use Ecto.Schema
+  import Ecto.Changeset
 
   schema "users" do
-    field :email, :string, null: false
-    field :name, :string, null: false
+    field :email, :string
+    field :is_manager, :boolean, default: false
+    field :name, :string
     field :password_hash, :string
-    field :is_manager, :boolean
-    field :supervisor_id, :id , foreign_key: :user_id
-    field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
+    field :supervisor_id, :id
 
-    has_many :jobs, Timesheets.Jobs.Job
-    has_many :sheets, Timesheets.Sheets.Sheet
     timestamps()
   end
 
+  @doc false
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :name, :password_hash, :is_manager])
+    |> validate_required([:email, :name, :password_hash, :is_manager])
+  end
 end

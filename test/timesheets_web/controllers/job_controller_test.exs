@@ -2,70 +2,73 @@ defmodule TimesheetsWeb.JobControllerTest do
   use TimesheetsWeb.ConnCase
 
   alias Timesheets.Jobs
+  alias Timesheets.Jobs.Job
 
-  @create_attrs %{desc: "some desc", jobname: "some jobname"}
-  @update_attrs %{desc: "some updated desc", jobname: "some updated jobname"}
-  @invalid_attrs %{desc: nil, jobname: nil}
+  @create_attrs %{
+    desc: "some desc",
+    jobcode: "some jobcode"
+  }
+  @update_attrs %{
+    desc: "some updated desc",
+    jobcode: "some updated jobcode"
+  }
+  @invalid_attrs %{desc: nil, jobcode: nil}
 
   def fixture(:job) do
     {:ok, job} = Jobs.create_job(@create_attrs)
     job
   end
 
+  setup %{conn: conn} do
+    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+  end
+
   describe "index" do
     test "lists all jobs", %{conn: conn} do
       conn = get(conn, Routes.job_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Jobs"
-    end
-  end
-
-  describe "new job" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.job_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Job"
+      assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create job" do
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "renders job when data is valid", %{conn: conn} do
       conn = post(conn, Routes.job_path(conn, :create), job: @create_attrs)
-
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.job_path(conn, :show, id)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.job_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Job"
+
+      assert %{
+               "id" => id,
+               "desc" => "some desc",
+               "jobcode" => "some jobcode"
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.job_path(conn, :create), job: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Job"
-    end
-  end
-
-  describe "edit job" do
-    setup [:create_job]
-
-    test "renders form for editing chosen job", %{conn: conn, job: job} do
-      conn = get(conn, Routes.job_path(conn, :edit, job))
-      assert html_response(conn, 200) =~ "Edit Job"
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "update job" do
     setup [:create_job]
 
-    test "redirects when data is valid", %{conn: conn, job: job} do
+    test "renders job when data is valid", %{conn: conn, job: %Job{id: id} = job} do
       conn = put(conn, Routes.job_path(conn, :update, job), job: @update_attrs)
-      assert redirected_to(conn) == Routes.job_path(conn, :show, job)
+      assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.job_path(conn, :show, job))
-      assert html_response(conn, 200) =~ "some updated desc"
+      conn = get(conn, Routes.job_path(conn, :show, id))
+
+      assert %{
+               "id" => id,
+               "desc" => "some updated desc",
+               "jobcode" => "some updated jobcode"
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, job: job} do
       conn = put(conn, Routes.job_path(conn, :update, job), job: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Job"
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
@@ -74,7 +77,8 @@ defmodule TimesheetsWeb.JobControllerTest do
 
     test "deletes chosen job", %{conn: conn, job: job} do
       conn = delete(conn, Routes.job_path(conn, :delete, job))
-      assert redirected_to(conn) == Routes.job_path(conn, :index)
+      assert response(conn, 204)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.job_path(conn, :show, job))
       end

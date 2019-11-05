@@ -2,70 +2,73 @@ defmodule TimesheetsWeb.SheetControllerTest do
   use TimesheetsWeb.ConnCase
 
   alias Timesheets.Sheets
+  alias Timesheets.Sheets.Sheet
 
-  @create_attrs %{approved: true, date: ~D[2010-04-17]}
-  @update_attrs %{approved: false, date: ~D[2011-05-18]}
-  @invalid_attrs %{approved: nil, date: nil}
+  @create_attrs %{
+    approved: true,
+    workdate: ~D[2010-04-17]
+  }
+  @update_attrs %{
+    approved: false,
+    workdate: ~D[2011-05-18]
+  }
+  @invalid_attrs %{approved: nil, workdate: nil}
 
   def fixture(:sheet) do
     {:ok, sheet} = Sheets.create_sheet(@create_attrs)
     sheet
   end
 
+  setup %{conn: conn} do
+    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+  end
+
   describe "index" do
     test "lists all sheets", %{conn: conn} do
       conn = get(conn, Routes.sheet_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Sheets"
-    end
-  end
-
-  describe "new sheet" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.sheet_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Sheet"
+      assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create sheet" do
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "renders sheet when data is valid", %{conn: conn} do
       conn = post(conn, Routes.sheet_path(conn, :create), sheet: @create_attrs)
-
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.sheet_path(conn, :show, id)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.sheet_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Sheet"
+
+      assert %{
+               "id" => id,
+               "approved" => true,
+               "workdate" => "2010-04-17"
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.sheet_path(conn, :create), sheet: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Sheet"
-    end
-  end
-
-  describe "edit sheet" do
-    setup [:create_sheet]
-
-    test "renders form for editing chosen sheet", %{conn: conn, sheet: sheet} do
-      conn = get(conn, Routes.sheet_path(conn, :edit, sheet))
-      assert html_response(conn, 200) =~ "Edit Sheet"
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "update sheet" do
     setup [:create_sheet]
 
-    test "redirects when data is valid", %{conn: conn, sheet: sheet} do
+    test "renders sheet when data is valid", %{conn: conn, sheet: %Sheet{id: id} = sheet} do
       conn = put(conn, Routes.sheet_path(conn, :update, sheet), sheet: @update_attrs)
-      assert redirected_to(conn) == Routes.sheet_path(conn, :show, sheet)
+      assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.sheet_path(conn, :show, sheet))
-      assert html_response(conn, 200)
+      conn = get(conn, Routes.sheet_path(conn, :show, id))
+
+      assert %{
+               "id" => id,
+               "approved" => false,
+               "workdate" => "2011-05-18"
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, sheet: sheet} do
       conn = put(conn, Routes.sheet_path(conn, :update, sheet), sheet: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Sheet"
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
@@ -74,7 +77,8 @@ defmodule TimesheetsWeb.SheetControllerTest do
 
     test "deletes chosen sheet", %{conn: conn, sheet: sheet} do
       conn = delete(conn, Routes.sheet_path(conn, :delete, sheet))
-      assert redirected_to(conn) == Routes.sheet_path(conn, :index)
+      assert response(conn, 204)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.sheet_path(conn, :show, sheet))
       end

@@ -22,7 +22,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 ## Design Decisions
 
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
-
+* Reference https://daveceddia.com/how-does-redux-work/
 ## Sample Data to login
 
 Please use the following data to login and test the application

@@ -2,9 +2,9 @@ use Mix.Config
 
 # Configure your database
 config :timesheets, Timesheets.Repo,
-  username: "timesheets",
+  username: "timesheets2",
   password: "ooVob2faiphe",
-  database: "timesheets_test",
+  database: "timesheets2_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

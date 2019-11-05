@@ -7,23 +7,29 @@ defmodule TimesheetsWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug TimesheetsWeb.Plugs.FetchCurrentUser
+  end
+
+  pipeline :ajax do
+    plug :accepts, ["json"]
+    plug :fetch_session
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  scope "/ajax", LensWeb do
+    pipe_through :ajax
+
+    resources "/sessions", SessionController, only: [:create], singleton: true
+  end
+
+
   scope "/", TimesheetsWeb do
     pipe_through :browser
-
-    get "/", PageController, :index
-    resources "/jobs", JobController, except: [:delete]
-    resources "/sheets", SheetController,only: [:show, :new, :create, :delete]
-    get "/dashboard", SheetController, :index
-    post "/approve", SheetController, :approve
-    resources "/sessions", SessionController,
-              only: [:new, :create, :delete], singleton: true
+    get "/*path", PageController, :index
   end
 
   # Other scopes may use custom stacks.

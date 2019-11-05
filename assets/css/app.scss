@@ -3,14 +3,10 @@
 $body-bg: white; // With scss, Bootstrap lets us override colors and stuff.
 @import "~bootstrap/scss/bootstrap";
 
-#sheet-header{
+#nav-header{
+  margin-bottom: 20px;
+}
+
+.row{
   margin-left: 0px;
-}
-
-textarea.log-notes{
-  height: 40px;
-}
-
-.help-block{
-  color: red;
 }

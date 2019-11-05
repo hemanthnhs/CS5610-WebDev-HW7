@@ -21,10 +21,6 @@ defmodule Timesheets.Jobs do
     Repo.all(Job)
   end
 
-  def list_jobs(id) do
-    Repo.all(from(j in Job, where: j.user_id == ^id))
-  end
-
   @doc """
   Gets a single job.
 
@@ -75,6 +71,22 @@ defmodule Timesheets.Jobs do
     job
     |> Job.changeset(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Job.
+
+  ## Examples
+
+      iex> delete_job(job)
+      {:ok, %Job{}}
+
+      iex> delete_job(job)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_job(%Job{} = job) do
+    Repo.delete(job)
   end
 
   @doc """

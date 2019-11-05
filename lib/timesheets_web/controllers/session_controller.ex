@@ -1,28 +1,24 @@
 defmodule TimesheetsWeb.SessionController do
   use TimesheetsWeb, :controller
 
-  def new(conn, _params) do
-    render(conn, "new.html")
-  end
+  action_fallback LensWeb.FallbackController
 
-  def create(conn, %{"email" => email,  "password" => password}) do
-    user = Timesheets.Users.authenticate(email, password)
+  alias Timesheets.Users
+
+  def create(conn, %{"email" => email, "password" => password}) do
+    user = Users.authenticate_user(email, password)
     if user do
+      token = Phoenix.Token.sign(conn, "session", user.id)
+      resp = %{token: token, user_id: user.id, user_name: user.name}
       conn
-      |> put_session(:user_id, user.id)
-      |> put_flash(:info, "Welcome back #{user.email}")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(:created, Jason.encode!(resp))
     else
+      resp = %{errors: ["Authentication Failed"]}
       conn
-      |> put_flash(:error, "Login failed.")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> put_resp_header("content-type", "application/json; charset=UTF-8")
+      |> send_resp(:unauthorized, Jason.encode!(resp))
     end
   end
 
-  def delete(conn, _params) do
-    conn
-    |> delete_session(:user_id)
-    |> put_flash(:info, "Logged out.")
-    |> redirect(to: Routes.page_path(conn, :index))
-  end
 end

@@ -7,52 +7,98 @@ defmodule Timesheets.Sheets do
   alias Timesheets.Repo
 
   alias Timesheets.Sheets.Sheet
-  alias Timesheets.Logs
-  alias Timesheets.Users.User
 
-  def list_subordinate_sheets(manager_id) do
-    subordinates = Repo.all(from(u in User, select: u.id, where: u.supervisor_id == ^manager_id))
-    Repo.all(from(s in Sheet, where: s.user_id in ^subordinates, order_by: {:desc, s.inserted_at},preload: [:user]))
+  @doc """
+  Returns the list of sheets.
+
+  ## Examples
+
+      iex> list_sheets()
+      [%Sheet{}, ...]
+
+  """
+  def list_sheets do
+    Repo.all(Sheet)
   end
 
-  def list_sheets_of_logged(worker_id) do
-    #    Attribution and Reference from https://elixirforum.com/t/what-is-the-correct-way-to-use-ecto-query-that-allow-items-to-be-displayed-in-templates/7313
-    #    Attribution and Reference from https://elixirforum.com/t/nested-preload-from-the-doc-makes-me-confused/11991/5
-    Repo.all(from(s in Sheet, where: s.user_id == ^worker_id, order_by: {:desc, s.inserted_at}))
+  @doc """
+  Gets a single sheet.
+
+  Raises `Ecto.NoResultsError` if the Sheet does not exist.
+
+  ## Examples
+
+      iex> get_sheet!(123)
+      %Sheet{}
+
+      iex> get_sheet!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_sheet!(id), do: Repo.get!(Sheet, id)
+
+  @doc """
+  Creates a sheet.
+
+  ## Examples
+
+      iex> create_sheet(%{field: value})
+      {:ok, %Sheet{}}
+
+      iex> create_sheet(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_sheet(attrs \\ %{}) do
+    %Sheet{}
+    |> Sheet.changeset(attrs)
+    |> Repo.insert()
   end
 
-  def get_sheet!(id) do
-    Repo.get!(Sheet, id) |> Repo.preload([:user, :logs])
-  end
+  @doc """
+  Updates a sheet.
 
-  def approve_sheet(%Sheet{} = sheet) do
+  ## Examples
+
+      iex> update_sheet(sheet, %{field: new_value})
+      {:ok, %Sheet{}}
+
+      iex> update_sheet(sheet, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_sheet(%Sheet{} = sheet, attrs) do
     sheet
-    |> Sheet.changeset(%{approved: true})
+    |> Sheet.changeset(attrs)
     |> Repo.update()
   end
 
-  def create_sheet(attrs \\ %{}) do
-    sheet = %Sheet{}
-    |> Sheet.changeset(attrs)
-    |> Repo.insert()
-    case sheet do
-    {:ok, sheet_info} ->
-      for work_id <- (1..8) do
-        if (attrs["job_id_#{work_id}"] != "" and attrs["hours_#{work_id}"] != "") do
-          Logs.create_log(%{sheet_id: sheet_info.id, job_id: attrs["job_id_#{work_id}"], desc: attrs["desc_#{work_id}"], hours: attrs["hours_#{work_id}"]})
-        end
-      end
-      sheet
-    {:error, _} ->
-      sheet
-    end
-  end
+  @doc """
+  Deletes a Sheet.
 
-  def change_sheet(%Sheet{} = sheet) do
-    Sheet.changeset(sheet, %{})
-  end
+  ## Examples
 
+      iex> delete_sheet(sheet)
+      {:ok, %Sheet{}}
+
+      iex> delete_sheet(sheet)
+      {:error, %Ecto.Changeset{}}
+
+  """
   def delete_sheet(%Sheet{} = sheet) do
     Repo.delete(sheet)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking sheet changes.
+
+  ## Examples
+
+      iex> change_sheet(sheet)
+      %Ecto.Changeset{source: %Sheet{}}
+
+  """
+  def change_sheet(%Sheet{} = sheet) do
+    Sheet.changeset(sheet, %{})
   end
 end

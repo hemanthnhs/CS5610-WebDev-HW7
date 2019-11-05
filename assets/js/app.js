@@ -2,6 +2,7 @@
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
 import css from "../css/app.scss";
+import init_page from './page';
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
@@ -15,3 +16,8 @@ import "phoenix_html"
 //
 // Local files can be imported directly using relative paths, for example:
 // import socket from "./socket"
+
+window.addEventListener("load", () => {
+    let root = document.getElementById('root');
+    init_page(root);
+});

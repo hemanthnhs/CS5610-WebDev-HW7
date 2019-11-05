@@ -4,18 +4,16 @@ defmodule Timesheets.Jobs.Job do
 
   schema "jobs" do
     field :desc, :string
-    field :jobname, :string
+    field :jobcode, :string
+    field :user_id, :id
 
-    belongs_to :user, Timesheets.Users.User
-    has_many :logs, Timesheets.Logs.Log
     timestamps()
   end
 
   @doc false
   def changeset(job, attrs) do
     job
-    |> cast(attrs, [:jobname, :desc, :user_id])
-    |> validate_required([:jobname, :user_id])
-    |> unique_constraint(:jobname, message: "Job Code is already taken")
+    |> cast(attrs, [:jobcode, :desc])
+    |> validate_required([:jobcode, :desc])
   end
 end

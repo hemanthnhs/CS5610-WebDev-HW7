@@ -2,9 +2,16 @@ defmodule TimesheetsWeb.LogControllerTest do
   use TimesheetsWeb.ConnCase
 
   alias Timesheets.Logs
+  alias Timesheets.Logs.Log
 
-  @create_attrs %{desc: "some desc", hours: 120.5}
-  @update_attrs %{desc: "some updated desc", hours: 456.7}
+  @create_attrs %{
+    desc: "some desc",
+    hours: 42
+  }
+  @update_attrs %{
+    desc: "some updated desc",
+    hours: 43
+  }
   @invalid_attrs %{desc: nil, hours: nil}
 
   def fixture(:log) do
@@ -12,60 +19,56 @@ defmodule TimesheetsWeb.LogControllerTest do
     log
   end
 
+  setup %{conn: conn} do
+    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+  end
+
   describe "index" do
     test "lists all logs", %{conn: conn} do
       conn = get(conn, Routes.log_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Logs"
-    end
-  end
-
-  describe "new log" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.log_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Log"
+      assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create log" do
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "renders log when data is valid", %{conn: conn} do
       conn = post(conn, Routes.log_path(conn, :create), log: @create_attrs)
-
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.log_path(conn, :show, id)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.log_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Log"
+
+      assert %{
+               "id" => id,
+               "desc" => "some desc",
+               "hours" => 42
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.log_path(conn, :create), log: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Log"
-    end
-  end
-
-  describe "edit log" do
-    setup [:create_log]
-
-    test "renders form for editing chosen log", %{conn: conn, log: log} do
-      conn = get(conn, Routes.log_path(conn, :edit, log))
-      assert html_response(conn, 200) =~ "Edit Log"
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
   describe "update log" do
     setup [:create_log]
 
-    test "redirects when data is valid", %{conn: conn, log: log} do
+    test "renders log when data is valid", %{conn: conn, log: %Log{id: id} = log} do
       conn = put(conn, Routes.log_path(conn, :update, log), log: @update_attrs)
-      assert redirected_to(conn) == Routes.log_path(conn, :show, log)
+      assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, Routes.log_path(conn, :show, log))
-      assert html_response(conn, 200) =~ "some updated desc"
+      conn = get(conn, Routes.log_path(conn, :show, id))
+
+      assert %{
+               "id" => id,
+               "desc" => "some updated desc",
+               "hours" => 43
+             } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, log: log} do
       conn = put(conn, Routes.log_path(conn, :update, log), log: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Log"
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
@@ -74,7 +77,8 @@ defmodule TimesheetsWeb.LogControllerTest do
 
     test "deletes chosen log", %{conn: conn, log: log} do
       conn = delete(conn, Routes.log_path(conn, :delete, log))
-      assert redirected_to(conn) == Routes.log_path(conn, :index)
+      assert response(conn, 204)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.log_path(conn, :show, log))
       end
