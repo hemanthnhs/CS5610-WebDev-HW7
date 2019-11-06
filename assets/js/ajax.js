@@ -70,16 +70,29 @@ export function list_jobs() {
 }
 
 function format_form_data(data, user_id){
+    console.log("=======================")
     let req = {
         user_id: user_id,
         workdate: data.workdate,
     }
     data.logs.forEach(function (log,index) {
+        console.log(index)
         req["job_id_"+index] = log.job_id
         req["hours_"+index] = log.hours
         req["desc_"+index] = log.desc
     })
+    console.log("req",req)
     return req;
+}
+
+export function get_sheet(id) {
+    get('/sheets/'+id)
+        .then((resp) => {
+            store.dispatch({
+                type: 'CHANGE_SHEET',
+                data: [resp.data],
+            });
+        });
 }
 
 export function submit_time_sheet(form) {

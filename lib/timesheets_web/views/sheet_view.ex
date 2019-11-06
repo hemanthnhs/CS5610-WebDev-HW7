@@ -1,6 +1,7 @@
 defmodule TimesheetsWeb.SheetView do
   use TimesheetsWeb, :view
   alias TimesheetsWeb.SheetView
+  alias TimesheetsWeb.LogView
 
   def render("index.json", %{sheets: sheets}) do
     %{data: render_many(sheets, SheetView, "sheet.json")}
@@ -13,6 +14,9 @@ defmodule TimesheetsWeb.SheetView do
   def render("sheet.json", %{sheet: sheet}) do
     %{id: sheet.id,
       workdate: sheet.workdate,
-      approved: sheet.approved}
+      approved: sheet.approved,
+      logs: render_many(sheet.logs, LogView, "log.json"),
+      user_name: sheet.user.name
+    }
   end
 end

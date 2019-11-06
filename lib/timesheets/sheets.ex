@@ -35,7 +35,9 @@ defmodule Timesheets.Sheets do
       ** (Ecto.NoResultsError)
 
   """
-  def get_sheet!(id), do: Repo.get!(Sheet, id)
+  def get_sheet!(id) do
+    Repo.get!(Sheet, id) |> Repo.preload([{:logs, :job}, :user])
+  end
 
   @doc """
   Creates a sheet.
@@ -66,50 +68,4 @@ defmodule Timesheets.Sheets do
     end
   end
 
-  @doc """
-  Updates a sheet.
-
-  ## Examples
-
-      iex> update_sheet(sheet, %{field: new_value})
-      {:ok, %Sheet{}}
-
-      iex> update_sheet(sheet, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_sheet(%Sheet{} = sheet, attrs) do
-    sheet
-    |> Sheet.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Sheet.
-
-  ## Examples
-
-      iex> delete_sheet(sheet)
-      {:ok, %Sheet{}}
-
-      iex> delete_sheet(sheet)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_sheet(%Sheet{} = sheet) do
-    Repo.delete(sheet)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking sheet changes.
-
-  ## Examples
-
-      iex> change_sheet(sheet)
-      %Ecto.Changeset{source: %Sheet{}}
-
-  """
-  def change_sheet(%Sheet{} = sheet) do
-    Sheet.changeset(sheet, %{})
-  end
 end

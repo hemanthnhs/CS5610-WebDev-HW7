@@ -10,9 +10,24 @@ function login(st0 = {email: "", password: "", errors: null}, action) {
     }
 }
 
+function sheets(st0 = new Map(), action) {
+    switch (action.type) {
+        case 'CHANGE_SHEET':
+            console.log("action", action)
+            let st1 = new Map(st0);
+            for (let sheet of action.data) {
+                st1.set(sheet.id, sheet);
+            }
+            return st1;
+        default:
+            return st0;
+    }
+}
+
 function row_update(st0, action, field){
     console.log("came")
     let parsedId = parseInt(action.id)
+    console.log("state",st0)
     var updated_rows = new Map(st0.logs);
     var changing_row = updated_rows.get(parsedId);
     switch (action.updated_key) {
@@ -36,7 +51,7 @@ function new_timesheet(st0 = {workdate: null, num_of_tasks: 1, logs: new Map([[1
     switch (action.type) {
         case 'ADD_ROW':
             let curr_row = st0.num_of_tasks+1
-            var updated_rows = new Map(st0.rows);
+            var updated_rows = new Map(st0.logs);
             updated_rows.set(curr_row,{job_id:-1,hours:0,desc:""})
             return Object.assign({}, st0, {num_of_tasks: st0.num_of_tasks+1, logs: updated_rows});
         case 'REMOVE_ROW':
@@ -92,6 +107,7 @@ function root_reducer(st0, action) {
     let reducer = combineReducers({
         forms,
         session,
+        sheets,
         jobs,
     });
     return deepFreeze(reducer(st0, action));

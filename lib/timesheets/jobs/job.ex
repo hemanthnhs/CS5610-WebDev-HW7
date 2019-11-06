@@ -4,8 +4,9 @@ defmodule Timesheets.Jobs.Job do
 
   schema "jobs" do
     field :jobcode, :string
-    field :user_id, :id
 
+    belongs_to :user, Timesheets.Users.User
+    has_many :logs, Timesheets.Logs.Log
     timestamps()
   end
 

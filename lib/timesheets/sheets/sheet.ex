@@ -5,8 +5,9 @@ defmodule Timesheets.Sheets.Sheet do
   schema "sheets" do
     field :approved, :boolean, default: false
     field :workdate, :date
-    field :user_id, :id
 
+    belongs_to :user, Timesheets.Users.User
+    has_many :logs, Timesheets.Logs.Log
     timestamps()
   end
 

@@ -5,6 +5,7 @@ import { Navbar, Nav, Col } from 'react-bootstrap';
 import { Provider, connect } from 'react-redux';
 import store from './store';
 import NewSheet from './sheets/newSheet';
+import ShowSheet from './sheets/show';
 import Login from './login';
 
 export default function init_page(root) {
@@ -48,6 +49,11 @@ function Page(props) {
                 <Route exact path="/newTimeSheet">
                     <NewSheet />
                 </Route>
+
+                <Route exact path="/sheets/:id" render={
+                    (props) =>
+                        <ShowSheet id={props.match.params.id} />
+                } />
 
                 <Route exact path="/login">
                     <Login />

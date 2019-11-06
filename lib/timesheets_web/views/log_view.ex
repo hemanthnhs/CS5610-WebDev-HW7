@@ -11,7 +11,7 @@ defmodule TimesheetsWeb.LogView do
   end
 
   def render("log.json", %{log: log}) do
-    %{id: log.id,
+    %{jobcode: log.job.jobcode,
       hours: log.hours,
       desc: log.desc}
   end
