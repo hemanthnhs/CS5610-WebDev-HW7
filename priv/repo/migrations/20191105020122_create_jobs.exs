@@ -4,7 +4,6 @@ defmodule Timesheets.Repo.Migrations.CreateJobs do
   def change do
     create table(:jobs) do
       add :jobcode, :string, null: false, unique: true
-      add :desc, :text
       add :user_id, references(:users, on_delete: :nothing), null: false
 
       timestamps()

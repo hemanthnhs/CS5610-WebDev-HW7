@@ -20,10 +20,12 @@ defmodule TimesheetsWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/ajax", LensWeb do
+  scope "/ajax", TimesheetsWeb do
     pipe_through :ajax
 
     resources "/sessions", SessionController, only: [:create], singleton: true
+    resources "/jobs", JobController, only: [:index]
+    resources "/sheets", SheetController,only: [:show, :create]
   end
 
 

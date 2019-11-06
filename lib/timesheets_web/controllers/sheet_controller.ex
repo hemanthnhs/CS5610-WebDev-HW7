@@ -12,6 +12,7 @@ defmodule TimesheetsWeb.SheetController do
   end
 
   def create(conn, %{"sheet" => sheet_params}) do
+    IO.puts("====================================================")
     with {:ok, %Sheet{} = sheet} <- Sheets.create_sheet(sheet_params) do
       conn
       |> put_status(:created)

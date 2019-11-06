@@ -3,7 +3,6 @@ defmodule Timesheets.Jobs.Job do
   import Ecto.Changeset
 
   schema "jobs" do
-    field :desc, :string
     field :jobcode, :string
     field :user_id, :id
 
@@ -13,7 +12,7 @@ defmodule Timesheets.Jobs.Job do
   @doc false
   def changeset(job, attrs) do
     job
-    |> cast(attrs, [:jobcode, :desc])
-    |> validate_required([:jobcode, :desc])
+    |> cast(attrs, [:jobcode])
+    |> validate_required([:jobcode])
   end
 end

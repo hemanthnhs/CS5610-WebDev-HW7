@@ -14,7 +14,7 @@ defmodule Timesheets.Logs.Log do
   @doc false
   def changeset(log, attrs) do
     log
-    |> cast(attrs, [:hours, :desc])
-    |> validate_required([:hours, :desc])
+    |> cast(attrs, [:hours, :desc, :job_id, :sheet_id])
+    |> validate_required([:hours, :desc, :job_id, :sheet_id])
   end
 end

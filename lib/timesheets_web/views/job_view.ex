@@ -11,8 +11,9 @@ defmodule TimesheetsWeb.JobView do
   end
 
   def render("job.json", %{job: job}) do
-    %{id: job.id,
+    %{
+      id: job.id,
       jobcode: job.jobcode,
-      desc: job.desc}
+      }
   end
 end

@@ -18,11 +18,11 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   
 ## Attributions and References
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
-
-## Design Decisions
-
-* In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
 * Reference https://daveceddia.com/how-does-redux-work/
+* https://stackoverflow.com/questions/5805059/how-do-i-make-a-placeholder-for-a-select-box
+## Design Decisions
+* In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
+
 ## Sample Data to login
 
 Please use the following data to login and test the application

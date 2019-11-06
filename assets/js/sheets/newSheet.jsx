@@ -1,12 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
+import {list_jobs, submit_time_sheet} from '../ajax';
 import {connect} from 'react-redux';
 import {Form, Button, Table} from 'react-bootstrap';
 
 function state2props(state) {
-    console.log(state.form)
-    return state.form;
+    return {form: state.forms.new_timesheet, jobs: state.jobs};
 }
 
 class NewSheet extends React.Component {
@@ -17,7 +16,12 @@ class NewSheet extends React.Component {
         this.state = {
             redirect: null,
         }
+        list_jobs()
         this.select_date = this.select_date.bind(this)
+    }
+
+    redirect(path) {
+        this.setState({redirect: path});
     }
 
     select_date(ev) {
@@ -28,8 +32,18 @@ class NewSheet extends React.Component {
         });
     }
 
+    change_task_data(ev, updated_key){
+        console.log("for task", ev.target.id,"job",ev.target.value)
+        this.props.dispatch({
+            type: 'CHANGE_TASK_DATA',
+            id: ev.target.id,
+            data: ev.target.value,
+            updated_key: updated_key
+        });
+    }
+
     add_row(curr_tasks) {
-        if(curr_tasks < 8 ){
+        if (curr_tasks < 8) {
             this.props.dispatch({
                 type: 'ADD_ROW'
             });
@@ -37,7 +51,7 @@ class NewSheet extends React.Component {
     }
 
     remove_row(curr_tasks) {
-        if(curr_tasks >1 ) {
+        if (curr_tasks > 1) {
             this.props.dispatch({
                 type: 'REMOVE_ROW'
             });
@@ -45,20 +59,22 @@ class NewSheet extends React.Component {
     }
 
     render() {
-        let {work_date, num_of_tasks, logs_data, dispatch} = this.props;
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />;
+        }
+        let {workdate, num_of_tasks, logs_data, dispatch} = this.props.form;
+        let jobs = this.props.jobs
+        let options_data = [<option key={-1} value={-1} disabled hidden>Select Job Code</option>]
+        jobs.forEach(function (job) {
+            options_data.push(<option key={job.id} value={job.id}>{job.jobcode}</option>)
+        })
         let row_data = []
         for (var i = 1; i <= num_of_tasks; i++) {
-            row_data.push(<tr>
+            row_data.push(<tr key={i}>
                 <td>{i}</td>
-                <td><Form.Control as="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control></td>
-                <td><Form.Control type="number" max={8} min={1}/></td>
-                <td><Form.Control type="text" placeholder="Short description"/></td>
+                <td><Form.Control as="select" id={i} onChange={(ev) => this.change_task_data(ev,"jobcode")} defaultValue={-1}>{options_data}</Form.Control></td>
+                <td><Form.Control type="number" id={i} max={8} min={1} onChange={(ev) => this.change_task_data(ev,"hours")}/></td>
+                <td><Form.Control type="text" id={i} placeholder="Short description"  onChange={(ev) => this.change_task_data(ev,"work_notes")}/></td>
             </tr>)
         }
         return (
@@ -66,7 +82,7 @@ class NewSheet extends React.Component {
                 <div className="row">
                     <h1>Fill New TimeSheet</h1>
                     <Form.Group className="offset-lg-5 offset-4" controlId="submit">
-                        <Button variant="success">Submit Work</Button>
+                        <Button variant="success" onClick={() => submit_time_sheet(this)}>Submit Work</Button>
                     </Form.Group>
                 </div>
                 <Form.Group className="row" controlId="workdate">
