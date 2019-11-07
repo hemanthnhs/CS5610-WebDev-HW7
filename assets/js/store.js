@@ -47,7 +47,7 @@ function row_update(st0, action, field){
     return Object.assign({}, st0, {logs: updated_rows});
 }
 
-function new_timesheet(st0 = {workdate: null, num_of_tasks: 1, logs: new Map([[1,{job_id:-1,hours:0,desc:""}]])}, action) {
+function new_timesheet(st0 = {workdate: null, num_of_tasks: 1, logs: new Map([[1,{job_id:-1,hours:0,desc:""}]]), errors:null}, action) {
     switch (action.type) {
         case 'ADD_ROW':
             let curr_row = st0.num_of_tasks+1
@@ -62,6 +62,10 @@ function new_timesheet(st0 = {workdate: null, num_of_tasks: 1, logs: new Map([[1
             return Object.assign({}, st0, {workdate: action.data});
         case 'CHANGE_TASK_DATA':
             return row_update(st0, action)
+        case 'ADD_ERRORS':
+            return Object.assign({}, st0, {errors: action.data.errors});
+        case 'NEW_FORM':
+            return {workdate: null, num_of_tasks: 1, logs: new Map([[1,{job_id:-1,hours:0,desc:""}]]), errors:null}
         default:
             return st0;
     }

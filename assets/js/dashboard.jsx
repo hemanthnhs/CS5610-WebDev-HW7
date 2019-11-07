@@ -13,7 +13,6 @@ class Dashboard extends React.Component {
         this.state = {
             redirect: null,
         };
-
         list_sheets()
     }
 
@@ -35,10 +34,12 @@ class Dashboard extends React.Component {
         }
 
         let {id, sheets, is_manager} = this.props
-
+        console.log("dashboard sheets--",Array.from(sheets.keys()))
         var display_rows = []
         var that = this
-        sheets.forEach(function (sheet, ind) {
+
+        Array.from(sheets.keys()).sort().reverse().map(function(sheet_id, index) {
+            let sheet = sheets.get(sheet_id)
             display_rows.push(<tr>
                 {is_manager ? <td>{sheet.user_name}</td> : null}
                 <td>{sheet.workdate}</td>
@@ -48,7 +49,8 @@ class Dashboard extends React.Component {
                     {is_manager ? (sheet.approved ? null : <Button className="approve" variant="success" onClick={() => approve_sheet(sheet.id)}>Approve</Button>) : null}
                 </td>
             </tr>)
-        })
+        });
+
         return (
             <div>
                 <h1>Dashboard</h1>

@@ -86,28 +86,37 @@ export function list_sheets() {
 export function list_jobs() {
     get('/jobs')
         .then((resp) => {
-            console.log("list_photos", resp);
+            console.log("list_jobs", resp);
             store.dispatch({
-                type: 'CHANGE_SHEET',
+                type: 'ADD_JOBS',
                 data: resp.data,
             });
         });
 }
 
 function format_form_data(data, user_id){
-    console.log("=======================")
     let req = {
         user_id: user_id,
         workdate: data.workdate,
     }
     data.logs.forEach(function (log,index) {
-        console.log(index)
         req["job_id_"+index] = log.job_id
         req["hours_"+index] = log.hours
         req["desc_"+index] = log.desc
     })
-    console.log("req",req)
     return req;
+}
+
+function validate_hours(data, user_id){
+    let total_hours = 0;
+    let partial_rows = 0;
+    data.logs.forEach(function (log,index) {
+        total_hours += parseInt(log.hours)
+        if(log.job_id == -1 || log.hours == 0){
+            partial_rows++;
+        }
+    })
+    return [total_hours, partial_rows];
 }
 
 export function get_sheet(id) {
@@ -124,18 +133,51 @@ export function submit_time_sheet(form) {
     let state = store.getState();
     let data = state.forms.new_timesheet;
     let user_id = state.session.user_id;
-    //TODO Handle date, improper data, basically validations
+    let errors = {}
+
+    console.log("data",data)
+
     if (data.workdate == null) {
-        return;
+        errors["date"] = "Work Date cannot be empty."
+    }else{
+        if(new Date(data.workdate).getTime() > new Date().getTime())
+        {
+            errors["date"] = "Select a past date."
+        }
     }
 
-    //TODO: Display errors
+    let [total_hours,partial_rows] = validate_hours(data)
+    if((data.num_of_tasks-partial_rows) == 0 ){
+        errors["rows"] = "Please enter both hours and jobcode for atleast one task"
+    }else{
+        if ( total_hours > 8) {
+            console.log("total hours", total_hours)
+            errors["hours"] = "Total hours cannot exceed 8"
+        } else if(total_hours == 0){
+            errors["hours"] = "Minimum of 1 hour should be entered"
+        }
+    }
+
+    if(Object.values(errors).length > 0){
+        store.dispatch({
+            type: 'ADD_ERRORS',
+            data: {errors: errors},
+        });
+        return;
+    }
     post('/sheets', {
         sheet: format_form_data(data, user_id)
     }).then((resp) => {
         console.log(resp);
         if (resp.data) {
             form.redirect('/sheets/' + resp.data.id);
+        }else{
+            if(resp.errors){
+                store.dispatch({
+                    type: 'ADD_ERRORS',
+                    data: {errors: resp.errors},
+                });
+            }
         }
     });
 }

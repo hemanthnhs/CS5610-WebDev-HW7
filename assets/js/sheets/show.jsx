@@ -42,6 +42,7 @@ class ShowSheet extends React.Component {
         return (
             <div>
                 <h1>Time Sheet Information</h1>
+                {is_manager ? <h4>Requested by: {sheet.user_name}</h4> : null}
                 <h4>Approval Status: {sheet.approved ? "Approved" : ((is_manager) ? <span><span>Not yet Approved </span><Button className="approve" variant="success" onClick={() => approve_sheet(sheet.id)}>Approve</Button></span> : "Pending Approval")} </h4>
                 <h4>Work Date: {sheet.workdate}</h4>
                 <Table striped hover>

@@ -2,9 +2,10 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import {list_jobs, submit_time_sheet} from '../ajax';
 import {connect} from 'react-redux';
-import {Form, Button, Table} from 'react-bootstrap';
+import {Form, Button, Table, Alert} from 'react-bootstrap';
 
 function state2props(state) {
+    console.log("state", state)
     return {form: state.forms.new_timesheet, jobs: state.jobs};
 }
 
@@ -16,6 +17,11 @@ class NewSheet extends React.Component {
         this.state = {
             redirect: null,
         }
+
+        this.props.dispatch({
+            type: 'NEW_FORM',
+        });
+
         list_jobs()
         this.select_date = this.select_date.bind(this)
     }
@@ -62,7 +68,15 @@ class NewSheet extends React.Component {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />;
         }
-        let {workdate, num_of_tasks, logs_data, dispatch} = this.props.form;
+        let {workdate, num_of_tasks, logs_data, errors, dispatch} = this.props.form;
+        let error_display = null
+        if (errors) {
+            let e = []
+            Object.values(errors).forEach(function(error){
+                e.push(<div>{error}</div>)
+            })
+            error_display = <Alert variant="danger">{ e }</Alert>;
+        }
         let jobs = this.props.jobs
         let options_data = [<option key={-1} value={-1} disabled hidden>Select Job Code</option>]
         jobs.forEach(function (job) {
@@ -85,9 +99,10 @@ class NewSheet extends React.Component {
                         <Button variant="success" onClick={() => submit_time_sheet(this)}>Submit Work</Button>
                     </Form.Group>
                 </div>
+                {error_display}
                 <Form.Group className="row" controlId="workdate">
                     <Form.Label>Work Date</Form.Label>
-                    <Form.Control className="offset-1 col-3" type="date" onChange={(ev) => this.select_date(ev)}/>
+                    <Form.Control className="offset-1 col-3" type="date" required={true} onChange={(ev) => this.select_date(ev)}/>
                 </Form.Group>
                 <Form.Group className="row">
                     <Form.Label>Number of tasks: </Form.Label>

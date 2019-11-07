@@ -18,10 +18,25 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   
 ## Attributions and References
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
+* Major attribution, reference and code is from Nats Notes : https://github.com/NatTuck/lens/tree/spa4-user-sessions (SPA's, session's, ajax, store)
 * Reference https://daveceddia.com/how-does-redux-work/
 * https://stackoverflow.com/questions/5805059/how-do-i-make-a-placeholder-for-a-select-box
+* https://stackoverflow.com/questions/8215556/how-to-check-if-input-date-is-equal-to-todays-date
+* https://stackoverflow.com/questions/52030110/sorting-strings-in-descending-order-in-javascript-most-efficiently
+* https://stackoverflow.com/questions/35341696/how-to-convert-map-keys-to-array
+
 ## Design Decisions
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
+* For manager and worker you can come back to dashboard/home any time by clicking on 'TimeSheets-Home' in the navigation.
+* The manager has options to see the time sheets in dashboard/home.
+* Manager can approve from the dashboard directly or view it and approve in the show/view page.
+* Worker has options to fill new sheet from navigation or can see their submitted sheets in homepage/dashboard.
+* When worker navigates to some other page and comes back to fill new sheet the sheet will be cleared and needs to be filled again (Design decision)
+* Validations related to submissions are done both in frontend and backend.
+* Partial tasks (rows with only jobid or hours but not both) will not be saved and atleast one valid/filled task row should be entered to submit.
+* Total hours must be less than or equal to 8 to submit a timesheet
+* Only completed/filled tasks(i.e with jobcode and hours) are saved
+* Blank rows are allowed and handled.
 
 ## Sample Data to login
 
