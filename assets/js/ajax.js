@@ -1,5 +1,6 @@
 import store from './store';
 import React from "react";
+import socket from "./socket"
 
 export function post(path, body) {
     let state = store.getState();

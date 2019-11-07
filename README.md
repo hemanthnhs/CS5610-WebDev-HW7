@@ -24,6 +24,8 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 * https://stackoverflow.com/questions/8215556/how-to-check-if-input-date-is-equal-to-todays-date
 * https://stackoverflow.com/questions/52030110/sorting-strings-in-descending-order-in-javascript-most-efficiently
 * https://stackoverflow.com/questions/35341696/how-to-convert-map-keys-to-array
+* https://hexdocs.pm/phoenix/Phoenix.Socket.html#c:id/1
+* https://elixirforum.com/t/map-filter-and-reduce/1219
 
 ## Design Decisions
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6

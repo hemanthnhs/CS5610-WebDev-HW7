@@ -11,10 +11,14 @@ defmodule TimesheetsWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
+    IO.puts("=======================================")
+    IO.inspect(user)
     %{id: user.id,
       email: user.email,
       name: user.name,
       password_hash: user.password_hash,
-      is_manager: user.is_manager}
+      is_manager: user.is_manager,
+      manager_id: user.supervisor_id
+    }
   end
 end

@@ -4,6 +4,7 @@ defmodule TimesheetsWeb.SheetController do
   alias Timesheets.Sheets
   alias Timesheets.Sheets.Sheet
   alias Timesheets.Logs
+  alias TimesheetsWeb.SheetChannel
 
   action_fallback TimesheetsWeb.FallbackController
 
@@ -25,8 +26,13 @@ defmodule TimesheetsWeb.SheetController do
       |> put_status(:created)
       |> put_resp_header("location", Routes.sheet_path(conn, :show, sheet))
       sheet = Sheets.get_sheet!(sheet.id)
+      totalhours = Sheets.get_totalhours(sheet.id)
+      if(totalhours < 8) do
+        TimesheetsWeb.SheetChannel.broadcast_msg(%{"manager_id" => conn.assigns[:current_user].supervisor_id})
+      end
       render(conn, "show.json", sheet: sheet)
     end
+
   end
 
   def show(conn, %{"id" => id}) do

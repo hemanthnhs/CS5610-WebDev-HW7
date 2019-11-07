@@ -11,7 +11,8 @@ defmodule Timesheets.Application do
       # Start the Ecto repository
       Timesheets.Repo,
       # Start the endpoint when the application starts
-      TimesheetsWeb.Endpoint
+      TimesheetsWeb.Endpoint,
+      Timesheets.BackupAgent
       # Starts a worker by calling: Timesheets.Worker.start_link(arg)
       # {Timesheets.Worker, arg},
     ]

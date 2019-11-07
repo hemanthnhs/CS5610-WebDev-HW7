@@ -68,6 +68,14 @@ defmodule Timesheets.Sheets do
     end
   end
 
+  def get_totalhours(sheet_id) do
+    sheet = Repo.get!(Sheet, sheet_id) |> Repo.preload([:logs])
+    IO.puts("************************************************")
+    IO.inspect(sheet.logs)
+    total_hours = Enum.reduce(sheet.logs, 0, fn (l, total) -> total + l.hours end)
+    total_hours
+  end
+
   def approve_sheet(%Sheet{} = sheet) do
     sheet
     |> Sheet.changeset(%{approved: true})

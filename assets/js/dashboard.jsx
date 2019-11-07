@@ -5,6 +5,8 @@ import {Button, Table} from 'react-bootstrap';
 import { Redirect } from 'react-router';
 
 import {list_sheets, approve_sheet} from './ajax';
+import socket from "./socket";
+import store from "./store";
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -14,6 +16,23 @@ class Dashboard extends React.Component {
             redirect: null,
         };
         list_sheets()
+
+        if(this.props.is_manager){
+            let channel = socket.channel("sheets:" + this.props.id, {});
+            channel
+                .join()
+                .receive("ok", this.join_success.bind(this))
+                .receive("error", resp => {
+                    console.log("Unable to join", resp);
+                });
+            channel.on("new_sheet", function () {
+                console.log("New Sheet submitted")
+            })
+        }
+    }
+
+    join_success(view) {
+        console.log("Joined Channel")
     }
 
     redirect(path) {
@@ -75,7 +94,7 @@ class Dashboard extends React.Component {
 }
 
 function state2props(state) {
-    return {id: state.session.user_id, sheets: state.sheets, is_manager: state.session.is_manager};
+    return {id: state.session.user_id, sheets: state.sheets, is_manager: state.session.is_manager, supervisor_id: state.session.supervisor_id};
 }
 
 export default connect(state2props)(Dashboard);
