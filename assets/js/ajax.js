@@ -3,7 +3,8 @@ import React from "react";
 
 export function post(path, body) {
     let state = store.getState();
-    let token = state.session.token;
+    let token = state.session ? state.session.token || "" : "";
+    console.log("body",body)
 
     return fetch('/ajax' + path, {
         method: 'post',
@@ -21,6 +22,7 @@ export function post(path, body) {
 export function get(path) {
     let state = store.getState();
     let token = state.session.token || "";
+    let current_user = state.session ? state.session.user_id || null : null;
 
     return fetch('/ajax' + path, {
         method: 'get',
@@ -31,7 +33,19 @@ export function get(path) {
             'accept': 'application/json',
             'x-auth': token || "",
         }),
+        assigns: {current_user: "current_user"}
     }).then((resp) => resp.json());
+}
+
+export function approve_sheet(id){
+    post('/approve', {id: id})
+        .then((resp) => {
+            console.log("resp",resp)
+            store.dispatch({
+                type: 'CHANGE_SHEET',
+                data: [resp.data],
+            });
+        });
 }
 
 export function submit_login(form) {
@@ -58,12 +72,23 @@ export function submit_login(form) {
         });
 }
 
+export function list_sheets() {
+    get('/sheets')
+        .then((resp) => {
+            console.log("list_sheets", resp);
+            store.dispatch({
+                type: 'CHANGE_SHEET',
+                data: resp.data,
+            });
+        });
+}
+
 export function list_jobs() {
     get('/jobs')
         .then((resp) => {
             console.log("list_photos", resp);
             store.dispatch({
-                type: 'ADD_JOBS',
+                type: 'CHANGE_SHEET',
                 data: resp.data,
             });
         });

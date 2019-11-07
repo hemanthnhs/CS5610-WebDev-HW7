@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink, Link } from 'react-rou
 import { Navbar, Nav, Col } from 'react-bootstrap';
 import { Provider, connect } from 'react-redux';
 import store from './store';
+import Dashboard from './dashboard';
 import NewSheet from './sheets/newSheet';
 import ShowSheet from './sheets/show';
 import Login from './login';
@@ -22,19 +23,7 @@ function Page(props) {
         <Router>
             <Navbar id="nav-header" bg="primary" variant="dark">
                 <Col md="8">
-                    <Nav>
-                        <Nav.Item>
-                            <NavLink to="/" exact activeClassName="active" className="nav-link">
-                                <h3>TimeSheets</h3>
-                            </NavLink>
-                        </Nav.Item>
-                        <Nav.Item>
-                            {/*This is for worker only*/}
-                            <NavLink to="/newTimeSheet" exact activeClassName="active" className="nav-link">
-                                Fill New TimeSheet
-                            </NavLink>
-                        </Nav.Item>
-                    </Nav>
+                    <Navigation />
                 </Col>
                 <Col md="4">
                     <Session />
@@ -43,7 +32,7 @@ function Page(props) {
 
             <Switch>
                 <Route exact path="/">
-                    <h1>Home</h1>
+                    <LandingPage/>
                 </Route>
 
                 <Route exact path="/newTimeSheet">
@@ -62,6 +51,48 @@ function Page(props) {
         </Router>
     );
 }
+
+let LandingPage = connect(({session}) => ({session}))(({session}) => {
+    if (session) {
+        return (<Dashboard />)
+    }
+    else{
+        return (<div>Please login to use the application</div>)
+    }
+});
+
+let Navigation = connect(({session}) => ({session}))(({session}) => {
+    if (session) {
+        return (
+            <Nav>
+                <Nav.Item>
+                    <NavLink to="/" exact activeClassName="active" className="nav-link">
+                        TimeSheets-Home
+                    </NavLink>
+                </Nav.Item>
+                {   !session.is_manager ?
+                    <Nav.Item>
+                        {/*This is for worker only*/}
+                        <NavLink to="/newTimeSheet" exact activeClassName="active" className="nav-link">
+                            Fill New TimeSheet
+                        </NavLink>
+                    </Nav.Item> : null
+                }
+            </Nav>
+        )
+    }
+    else{
+        return (
+            <Nav>
+                <Nav.Item>
+                    <NavLink to="/" exact activeClassName="active" className="nav-link">
+                        TimeSheets-Home
+                    </NavLink>
+                </Nav.Item>
+            </Nav>
+        )
+    }
+});
 
 let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
     function logout(ev) {

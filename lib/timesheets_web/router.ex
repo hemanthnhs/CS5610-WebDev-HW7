@@ -25,7 +25,8 @@ defmodule TimesheetsWeb.Router do
 
     resources "/sessions", SessionController, only: [:create], singleton: true
     resources "/jobs", JobController, only: [:index]
-    resources "/sheets", SheetController,only: [:show, :create]
+    resources "/sheets", SheetController,only: [:show, :index, :create]
+    post "/approve", SheetController, :approve
   end
 
 

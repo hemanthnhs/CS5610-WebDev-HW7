@@ -7,18 +7,18 @@ defmodule Timesheets.Sheets do
   alias Timesheets.Repo
   alias Timesheets.Logs
   alias Timesheets.Sheets.Sheet
+  alias Timesheets.Users.User
 
-  @doc """
-  Returns the list of sheets.
 
-  ## Examples
+  def list_subordinate_sheets(manager_id) do
+    subordinates = Repo.all(from(u in User, select: u.id, where: u.supervisor_id == ^manager_id))
+    Repo.all(from(s in Sheet, where: s.user_id in ^subordinates, order_by: {:desc, s.inserted_at},preload: [{:logs, :job}, :user]))
+  end
 
-      iex> list_sheets()
-      [%Sheet{}, ...]
-
-  """
-  def list_sheets do
-    Repo.all(Sheet)
+  def list_sheets_of_logged(worker_id) do
+    #    Attribution and Reference from https://elixirforum.com/t/what-is-the-correct-way-to-use-ecto-query-that-allow-items-to-be-displayed-in-templates/7313
+    #    Attribution and Reference from https://elixirforum.com/t/nested-preload-from-the-doc-makes-me-confused/11991/5
+    Repo.all(from(s in Sheet, where: s.user_id == ^worker_id, order_by: {:desc, s.inserted_at},preload: [{:logs, :job}, :user]))
   end
 
   @doc """
@@ -66,6 +66,12 @@ defmodule Timesheets.Sheets do
       {:error, _} ->
         sheet
     end
+  end
+
+  def approve_sheet(%Sheet{} = sheet) do
+    sheet
+    |> Sheet.changeset(%{approved: true})
+    |> Repo.update()
   end
 
 end
