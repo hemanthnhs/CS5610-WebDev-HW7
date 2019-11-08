@@ -13,7 +13,6 @@ function login(st0 = {email: "", password: "", errors: null}, action) {
 function sheets(st0 = new Map(), action) {
     switch (action.type) {
         case 'CHANGE_SHEET':
-            console.log("action", action)
             let st1 = new Map(st0);
             for (let sheet of action.data) {
                 st1.set(sheet.id, sheet);
@@ -84,7 +83,7 @@ function jobs(st0 = new Map(), action) {
     }
 }
 
-function alerts(st0 = [{id: 1, type: "warning", message: "Test Alert"}], action) {
+function alerts(st0 = [], action) {
     switch (action.type) {
         case 'NEW_ALERTS':
             var st1 = st0.slice(0)

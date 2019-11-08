@@ -72,7 +72,6 @@ let Navigation = connect(({session}) => ({session}))(({session}) => {
                 </Nav.Item>
                 {   !session.is_manager ?
                     <Nav.Item>
-                        {/*This is for worker only*/}
                         <NavLink to="/newTimeSheet" exact activeClassName="active" className="nav-link">
                             Fill New TimeSheet
                         </NavLink>
@@ -102,7 +101,6 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
             type: 'LOG_OUT',
         });
     }
-    console.log("sessionnnn",session)
     if (session) {
         return (
             <Nav>

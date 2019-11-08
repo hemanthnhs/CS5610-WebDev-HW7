@@ -30,6 +30,7 @@ defmodule TimesheetsWeb.SheetController do
       if(totalhours < 8) do
         TimesheetsWeb.SheetChannel.broadcast_msg(%{"manager_id" => conn.assigns[:current_user].supervisor_id, "user_name" => conn.assigns[:current_user].name, "workdate" => sheet.workdate, "sheet_id" => sheet.id})
       end
+      TimesheetsWeb.SheetChannel.broadcast_sheet(%{"manager_id" => conn.assigns[:current_user].supervisor_id})
       render(conn, "show.json", sheet: sheet)
     end
 
@@ -44,6 +45,7 @@ defmodule TimesheetsWeb.SheetController do
     sheet = Sheets.get_sheet!(id)
     Sheets.approve_sheet(sheet)
     sheet = Sheets.get_sheet!(id)
+    TimesheetsWeb.SheetChannel.broadcast_approve(%{"worker_id" => sheet.user_id})
     render(conn, "show.json", sheet: sheet)
   end
 end

@@ -3,14 +3,14 @@ Description=TimeSheetSPA
 
 [Service]
 Type=simple
-User=timesheets
-Group=timesheets
+User=timesheets2
+Group=timesheets2
 Restart=on-failure
 Environment=MIX_ENV=prod "PORT=5001"
 Environment=LANG=en_US.UTF-8
 
-WorkingDirectory=/home/timesheets/CS5610-WebDev-HW6
-ExecStart=bash /home/timesheets/CS5610-WebDev-HW6/start.sh
+WorkingDirectory=/home/timesheets2/CS5610-WebDev-HW7
+ExecStart=bash /home/timesheets2/CS5610-WebDev-HW7/start.sh
 
 [Install]
 WantedBy=multi-user.target

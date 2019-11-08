@@ -2,11 +2,20 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 import {Table, Button} from 'react-bootstrap';
-import {get_sheet, approve_sheet} from '../ajax';
+import {get_sheet, approve_sheet, list_sheets} from '../ajax';
+import {get_channel, join_channel} from "../channel";
+import {AlertList} from "react-bs-notifier";
+import store from "../store";
 
 function state2props(state, props) {
     let id = parseInt(props.id);
-    return {id: id, sheet: state.sheets.get(id), is_manager: state.session.is_manager};
+    return {
+        id: id,
+        sheet: state.sheets.get(id),
+        user_id: state.session.user_id,
+        is_manager: state.session.is_manager,
+        alerts: state.alerts
+    };
 }
 
 class ShowSheet extends React.Component {
@@ -17,7 +26,14 @@ class ShowSheet extends React.Component {
         this.state = {
             redirect: null,
         }
-        console.log(props)
+
+        if (props.is_manager) {
+            let channel = get_channel()
+            if (channel == null) {
+                channel = join_channel(props.user_id, list_sheets)
+            }
+        }
+
         get_sheet(props.id)
     }
 
@@ -25,8 +41,20 @@ class ShowSheet extends React.Component {
         this.setState({redirect: path});
     }
 
+    onAlertDismissed(alert) {
+        store.dispatch({
+            type: 'REMOVE_ALERT',
+            data: alert
+        });
+    }
+
     render() {
-        let {id, sheet, is_manager} = this.props;
+        let {id, sheet, is_manager, user_id, alerts} = this.props;
+        let alert_display = null
+
+        if (alerts != "") {
+            alert_display = <AlertList timeout={15000} onDismiss={this.onAlertDismissed.bind(this)} alerts={alerts}/>
+        }
         if (!sheet) {
             get_sheet(id);
 
@@ -41,9 +69,12 @@ class ShowSheet extends React.Component {
 
         return (
             <div>
+                {alert_display}
                 <h1>Time Sheet Information</h1>
                 {is_manager ? <h4>Requested by: {sheet.user_name}</h4> : null}
-                <h4>Approval Status: {sheet.approved ? "Approved" : ((is_manager) ? <span><span>Not yet Approved </span><Button className="approve" variant="success" onClick={() => approve_sheet(sheet.id)}>Approve</Button></span> : "Pending Approval")} </h4>
+                <h4>Approval Status: {sheet.approved ? "Approved" : ((is_manager) ?
+                    <span><span>Not yet Approved </span><Button className="approve" variant="success"
+                                                                onClick={() => approve_sheet(sheet.id)}>Approve</Button></span> : "Pending Approval")} </h4>
                 <h4>Work Date: {sheet.workdate}</h4>
                 <Table striped hover>
                     <thead>

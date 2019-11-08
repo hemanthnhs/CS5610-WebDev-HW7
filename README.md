@@ -27,6 +27,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 * https://hexdocs.pm/phoenix/Phoenix.Socket.html#c:id/1
 * https://elixirforum.com/t/map-filter-and-reduce/1219
 * https://chadly.github.io/react-bs-notifier/
+* https://stackoverflow.com/questions/7000851/array-sort-doesnt-sort-numbers-correctly
 
 ## Design Decisions
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
@@ -40,11 +41,13 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 * Total hours must be less than or equal to 8 to submit a timesheet
 * Only completed/filled tasks(i.e with jobcode and hours) are saved
 * Blank rows are allowed and handled.
+* Alert to manager when a user submits timesheet less than 8 hours will be timedout in 15s or on dismiss.
 
 ## Sample Data to login
 
-Please use the following data to login and test the application
-Managers
+Please use the following data to login and test the application  
+Managers    
+
 email: manager1@example.com  
 password: passwordmanager1  
 manages workers 1 to 5

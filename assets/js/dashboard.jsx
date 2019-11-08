@@ -1,12 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {Button, Table} from 'react-bootstrap';
-import { Redirect } from 'react-router';
-import { AlertList, Alert } from "react-bs-notifier";
+import {Redirect} from 'react-router';
+import {AlertList, Alert} from "react-bs-notifier";
 
 import {list_sheets, approve_sheet} from './ajax';
-import socket from "./socket";
+import {get_channel, join_channel} from './channel';
 import store from "./store";
 
 class Dashboard extends React.Component {
@@ -18,25 +17,10 @@ class Dashboard extends React.Component {
         };
         list_sheets()
 
-        if(this.props.is_manager){
-            let channel = socket.channel("sheets:" + this.props.id, {});
-            channel
-                .join()
-                .receive("ok", this.join_success.bind(this))
-                .receive("error", resp => {
-                    console.log("Unable to join", resp);
-                });
-            channel.on("less_hours_alert", function (data) {
-                store.dispatch({
-                    type: 'NEW_ALERTS',
-                    data: data
-                });
-            })
+        let channel = get_channel()
+        if (channel == null) {
+            join_channel(this.props.id, list_sheets)
         }
-    }
-
-    join_success(view) {
-        console.log("Joined Channel")
     }
 
     redirect(path) {
@@ -45,9 +29,9 @@ class Dashboard extends React.Component {
         });
     }
 
-    open_sheet(id){
+    open_sheet(id) {
         this.setState({
-            redirect: "/sheets/"+id,
+            redirect: "/sheets/" + id,
         });
     }
 
@@ -60,20 +44,19 @@ class Dashboard extends React.Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to={this.state.redirect} />
+            return <Redirect to={this.state.redirect}/>
         }
 
         let {id, sheets, is_manager, supervisor_id, alerts} = this.props
         let alert_display = null
 
-        if(alerts!=""){
-            alert_display = <AlertList timeout={15000} onDismiss={this.onAlertDismissed.bind(this)} alerts={alerts} />
+        if (alerts != "") {
+            alert_display = <AlertList timeout={15000} onDismiss={this.onAlertDismissed.bind(this)} alerts={alerts}/>
         }
 
         var display_rows = []
         var that = this
-
-        Array.from(sheets.keys()).sort().reverse().map(function(sheet_id, index) {
+        Array.from(sheets.keys()).sort(function(a,b) { return b - a; }).map(function (sheet_id, index) {
             let sheet = sheets.get(sheet_id)
             display_rows.push(<tr>
                 {is_manager ? <td>{sheet.user_name}</td> : null}
@@ -81,7 +64,8 @@ class Dashboard extends React.Component {
                 <td>{sheet.approved ? "Approved" : "Pending Approval"}</td>
                 <td>
                     <Button variant="primary" onClick={() => that.open_sheet(sheet.id)}>View</Button>
-                    {is_manager ? (sheet.approved ? null : <Button className="approve" variant="success" onClick={() => approve_sheet(sheet.id)}>Approve</Button>) : null}
+                    {is_manager ? (sheet.approved ? null : <Button className="approve" variant="success"
+                                                                   onClick={() => approve_sheet(sheet.id)}>Approve</Button>) : null}
                 </td>
             </tr>)
         });
@@ -91,19 +75,19 @@ class Dashboard extends React.Component {
                 {alert_display}
                 <h1>Dashboard</h1>
                 {(sheets.size != 0) ?
-                <Table striped hover>
-                    <thead>
-                    <tr>
-                        {is_manager ? <th>Requested By</th> : null}
-                        <th>Work Date</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {display_rows}
-                    </tbody>
-                </Table> : null
+                    <Table striped hover>
+                        <thead>
+                        <tr>
+                            {is_manager ? <th>Requested By</th> : null}
+                            <th>Work Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {display_rows}
+                        </tbody>
+                    </Table> : null
                 }
             </div>
         );
@@ -111,8 +95,13 @@ class Dashboard extends React.Component {
 }
 
 function state2props(state) {
-    console.log("state-----------------------", state)
-    return {id: state.session.user_id, sheets: state.sheets, is_manager: state.session.is_manager, supervisor_id: state.session.supervisor_id, alerts: state.alerts};
+    return {
+        id: state.session.user_id,
+        sheets: state.sheets,
+        is_manager: state.session.is_manager,
+        supervisor_id: state.session.supervisor_id,
+        alerts: state.alerts
+    };
 }
 
 export default connect(state2props)(Dashboard);
