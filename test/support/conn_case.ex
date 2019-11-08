@@ -1,4 +1,4 @@
-defmodule TimesheetsWeb.ConnCase do
+defmodule Timesheets2Web.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,18 +19,18 @@ defmodule TimesheetsWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      alias TimesheetsWeb.Router.Helpers, as: Routes
+      alias Timesheets2Web.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint TimesheetsWeb.Endpoint
+      @endpoint Timesheets2Web.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timesheets.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timesheets2.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Timesheets.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Timesheets2.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

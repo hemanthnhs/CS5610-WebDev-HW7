@@ -1,8 +1,8 @@
-defmodule TimesheetsWeb.LogControllerTest do
-  use TimesheetsWeb.ConnCase
+defmodule Timesheets2Web.LogControllerTest do
+  use Timesheets2Web.ConnCase
 
-  alias Timesheets.Logs
-  alias Timesheets.Logs.Log
+  alias Timesheets2.Logs
+  alias Timesheets2.Logs.Log
 
   @create_attrs %{
     desc: "some desc",

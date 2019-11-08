@@ -1,10 +1,10 @@
-defmodule TimesheetsWeb.UserController do
-  use TimesheetsWeb, :controller
+defmodule Timesheets2Web.UserController do
+  use Timesheets2Web, :controller
 
-  alias Timesheets.Users
-  alias Timesheets.Users.User
+  alias Timesheets2.Users
+  alias Timesheets2.Users.User
 
-  action_fallback TimesheetsWeb.FallbackController
+  action_fallback Timesheets2Web.FallbackController
 
   def index(conn, _params) do
     users = Users.list_users()

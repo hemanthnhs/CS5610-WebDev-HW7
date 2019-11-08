@@ -1,9 +1,9 @@
-defmodule TimesheetsWeb.SessionController do
-  use TimesheetsWeb, :controller
+defmodule Timesheets2Web.SessionController do
+  use Timesheets2Web, :controller
 
   action_fallback LensWeb.FallbackController
 
-  alias Timesheets.Users
+  alias Timesheets2.Users
 
   def create(conn, %{"email" => email, "password" => password}) do
     user = Users.authenticate_user(email, password)

@@ -1,10 +1,10 @@
-defmodule Timesheets.UsersTest do
-  use Timesheets.DataCase
+defmodule Timesheets2.UsersTest do
+  use Timesheets2.DataCase
 
-  alias Timesheets.Users
+  alias Timesheets2.Users
 
   describe "users" do
-    alias Timesheets.Users.User
+    alias Timesheets2.Users.User
 
     @valid_attrs %{email: "some email", name: "some name"}
     @update_attrs %{email: "some updated email", name: "some updated name"}
@@ -65,7 +65,7 @@ defmodule Timesheets.UsersTest do
   end
 
   describe "users" do
-    alias Timesheets.Users.User
+    alias Timesheets2.Users.User
 
     @valid_attrs %{email: "some email", is_manager: true, name: "some name", password_hash: "some password_hash"}
     @update_attrs %{email: "some updated email", is_manager: false, name: "some updated name", password_hash: "some updated password_hash"}

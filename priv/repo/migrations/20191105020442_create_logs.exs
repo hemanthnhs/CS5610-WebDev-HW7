@@ -1,4 +1,4 @@
-defmodule Timesheets.Repo.Migrations.CreateLogs do
+defmodule Timesheets2.Repo.Migrations.CreateLogs do
   use Ecto.Migration
 
   def change do

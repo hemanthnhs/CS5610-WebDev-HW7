@@ -1,10 +1,10 @@
-defmodule Timesheets.SheetsTest do
-  use Timesheets.DataCase
+defmodule Timesheets2.SheetsTest do
+  use Timesheets2.DataCase
 
-  alias Timesheets.Sheets
+  alias Timesheets2.Sheets
 
   describe "sheets" do
-    alias Timesheets.Sheets.Sheet
+    alias Timesheets2.Sheets.Sheet
 
     @valid_attrs %{approved: true, date: ~D[2010-04-17]}
     @update_attrs %{approved: false, date: ~D[2011-05-18]}
@@ -65,7 +65,7 @@ defmodule Timesheets.SheetsTest do
   end
 
   describe "sheets" do
-    alias Timesheets.Sheets.Sheet
+    alias Timesheets2.Sheets.Sheet
 
     @valid_attrs %{approved: true, workdate: ~D[2010-04-17]}
     @update_attrs %{approved: false, workdate: ~D[2011-05-18]}

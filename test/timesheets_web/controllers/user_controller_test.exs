@@ -1,8 +1,8 @@
-defmodule TimesheetsWeb.UserControllerTest do
-  use TimesheetsWeb.ConnCase
+defmodule Timesheets2Web.UserControllerTest do
+  use Timesheets2Web.ConnCase
 
-  alias Timesheets.Users
-  alias Timesheets.Users.User
+  alias Timesheets2.Users
+  alias Timesheets2.Users.User
 
   @create_attrs %{
     email: "some email",

@@ -1,4 +1,4 @@
-defmodule Timesheets.Sheets.Sheet do
+defmodule Timesheets2.Sheets.Sheet do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,8 +6,8 @@ defmodule Timesheets.Sheets.Sheet do
     field :approved, :boolean, default: false
     field :workdate, :date
 
-    belongs_to :user, Timesheets.Users.User
-    has_many :logs, Timesheets.Logs.Log
+    belongs_to :user, Timesheets2.Users.User
+    has_many :logs, Timesheets2.Logs.Log
     timestamps()
   end
 

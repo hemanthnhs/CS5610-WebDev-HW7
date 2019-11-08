@@ -1,4 +1,4 @@
-defmodule Timesheets.Users.User do
+defmodule Timesheets2.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 

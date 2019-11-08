@@ -1,13 +1,13 @@
-defmodule Timesheets.Sheets do
+defmodule Timesheets2.Sheets do
   @moduledoc """
   The Sheets context.
   """
 
   import Ecto.Query, warn: false
-  alias Timesheets.Repo
-  alias Timesheets.Logs
-  alias Timesheets.Sheets.Sheet
-  alias Timesheets.Users.User
+  alias Timesheets2.Repo
+  alias Timesheets2.Logs
+  alias Timesheets2.Sheets.Sheet
+  alias Timesheets2.Users.User
 
 
   def list_subordinate_sheets(manager_id) do

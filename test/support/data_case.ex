@@ -1,4 +1,4 @@
-defmodule Timesheets.DataCase do
+defmodule Timesheets2.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Timesheets.DataCase do
 
   using do
     quote do
-      alias Timesheets.Repo
+      alias Timesheets2.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Timesheets.DataCase
+      import Timesheets2.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timesheets.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timesheets2.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Timesheets.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Timesheets2.Repo, {:shared, self()})
     end
 
     :ok

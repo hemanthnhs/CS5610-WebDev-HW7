@@ -1,6 +1,6 @@
-defmodule TimesheetsWeb.LogView do
-  use TimesheetsWeb, :view
-  alias TimesheetsWeb.LogView
+defmodule Timesheets2Web.LogView do
+  use Timesheets2Web, :view
+  alias Timesheets2Web.LogView
 
   def render("index.json", %{logs: logs}) do
     %{data: render_many(logs, LogView, "log.json")}

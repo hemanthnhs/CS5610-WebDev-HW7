@@ -1,7 +1,7 @@
-defmodule TimesheetsWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :timesheets
+defmodule Timesheets2Web.Endpoint do
+  use Phoenix.Endpoint, otp_app: :timesheets2
 
-  socket "/socket", TimesheetsWeb.UserSocket,
+  socket "/socket", Timesheets2Web.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -11,7 +11,7 @@ defmodule TimesheetsWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :timesheets,
+    from: :timesheets2,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
@@ -42,5 +42,5 @@ defmodule TimesheetsWeb.Endpoint do
     key: "_timesheets_key",
     signing_salt: "tkHGZVH8"
 
-  plug TimesheetsWeb.Router
+  plug Timesheets2Web.Router
 end

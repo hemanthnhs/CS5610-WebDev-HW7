@@ -1,3 +1,3 @@
-defmodule TimesheetsWeb.PageView do
-  use TimesheetsWeb, :view
+defmodule Timesheets2Web.PageView do
+  use Timesheets2Web, :view
 end

@@ -1,12 +1,12 @@
-defmodule Timesheets.Jobs.Job do
+defmodule Timesheets2.Jobs.Job do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "jobs" do
     field :jobcode, :string
 
-    belongs_to :user, Timesheets.Users.User
-    has_many :logs, Timesheets.Logs.Log
+    belongs_to :user, Timesheets2.Users.User
+    has_many :logs, Timesheets2.Logs.Log
     timestamps()
   end
 

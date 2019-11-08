@@ -1,12 +1,12 @@
-defmodule Timesheets.Users do
+defmodule Timesheets2.Users do
   @moduledoc """
   The Users context.
   """
 
   import Ecto.Query, warn: false
-  alias Timesheets.Repo
+  alias Timesheets2.Repo
 
-  alias Timesheets.Users.User
+  alias Timesheets2.Users.User
 
 
   @doc """

@@ -1,4 +1,4 @@
-defmodule Timesheets.Logs.Log do
+defmodule Timesheets2.Logs.Log do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,8 +6,8 @@ defmodule Timesheets.Logs.Log do
     field :desc, :string
     field :hours, :integer
 
-    belongs_to :job, Timesheets.Jobs.Job
-    belongs_to :sheet, Timesheets.Sheets.Sheet
+    belongs_to :job, Timesheets2.Jobs.Job
+    belongs_to :sheet, Timesheets2.Sheets.Sheet
     timestamps()
   end
 

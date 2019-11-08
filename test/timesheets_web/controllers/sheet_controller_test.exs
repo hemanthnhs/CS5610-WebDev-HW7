@@ -1,8 +1,8 @@
-defmodule TimesheetsWeb.SheetControllerTest do
-  use TimesheetsWeb.ConnCase
+defmodule Timesheets2Web.SheetControllerTest do
+  use Timesheets2Web.ConnCase
 
-  alias Timesheets.Sheets
-  alias Timesheets.Sheets.Sheet
+  alias Timesheets2.Sheets
+  alias Timesheets2.Sheets.Sheet
 
   @create_attrs %{
     approved: true,

@@ -1,10 +1,10 @@
-defmodule Timesheets.JobsTest do
-  use Timesheets.DataCase
+defmodule Timesheets2.JobsTest do
+  use Timesheets2.DataCase
 
-  alias Timesheets.Jobs
+  alias Timesheets2.Jobs
 
   describe "jobs" do
-    alias Timesheets.Jobs.Job
+    alias Timesheets2.Jobs.Job
 
     @valid_attrs %{desc: "some desc", jobname: "some jobname"}
     @update_attrs %{desc: "some updated desc", jobname: "some updated jobname"}
@@ -65,7 +65,7 @@ defmodule Timesheets.JobsTest do
   end
 
   describe "jobs" do
-    alias Timesheets.Jobs.Job
+    alias Timesheets2.Jobs.Job
 
     @valid_attrs %{desc: "some desc", jobcode: "some jobcode"}
     @update_attrs %{desc: "some updated desc", jobcode: "some updated jobcode"}

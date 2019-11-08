@@ -1,4 +1,4 @@
-defmodule Timesheets.Repo.Migrations.CreateUsers do
+defmodule Timesheets2.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do

@@ -1,10 +1,10 @@
-defmodule TimesheetsWeb.LogController do
-  use TimesheetsWeb, :controller
+defmodule Timesheets2Web.LogController do
+  use Timesheets2Web, :controller
 
-  alias Timesheets.Logs
-  alias Timesheets.Logs.Log
+  alias Timesheets2.Logs
+  alias Timesheets2.Logs.Log
 
-  action_fallback TimesheetsWeb.FallbackController
+  action_fallback Timesheets2Web.FallbackController
 
   def index(conn, _params) do
     logs = Logs.list_logs()

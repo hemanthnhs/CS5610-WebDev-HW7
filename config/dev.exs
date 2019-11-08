@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :timesheets, Timesheets.Repo,
+config :timesheets2, Timesheets2.Repo,
   username: "timesheets2",
   password: "ooVob2faiphe",
   database: "timesheets2_dev",
@@ -15,7 +15,7 @@ config :timesheets, Timesheets.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :timesheets, TimesheetsWeb.Endpoint,
+config :timesheets2, Timesheets2Web.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -55,7 +55,7 @@ config :timesheets, TimesheetsWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :timesheets, TimesheetsWeb.Endpoint,
+config :timesheets2, Timesheets2Web.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

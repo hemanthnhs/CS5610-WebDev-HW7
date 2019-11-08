@@ -1,5 +1,5 @@
-defmodule TimesheetsWeb.ErrorView do
-  use TimesheetsWeb, :view
+defmodule Timesheets2Web.ErrorView do
+  use Timesheets2Web, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

@@ -1,5 +1,5 @@
-defmodule TimesheetsWeb.Router do
-  use TimesheetsWeb, :router
+defmodule Timesheets2Web.Router do
+  use Timesheets2Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -20,7 +20,7 @@ defmodule TimesheetsWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/ajax", TimesheetsWeb do
+  scope "/ajax", Timesheets2Web do
     pipe_through :ajax
 
     resources "/sessions", SessionController, only: [:create], singleton: true
@@ -30,13 +30,13 @@ defmodule TimesheetsWeb.Router do
   end
 
 
-  scope "/", TimesheetsWeb do
+  scope "/", Timesheets2Web do
     pipe_through :browser
     get "/*path", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TimesheetsWeb do
+  # scope "/api", Timesheets2Web do
   #   pipe_through :api
   # end
 end

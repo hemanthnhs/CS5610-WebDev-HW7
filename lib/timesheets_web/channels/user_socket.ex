@@ -1,9 +1,9 @@
-defmodule TimesheetsWeb.UserSocket do
+defmodule Timesheets2Web.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", TimesheetsWeb.RoomChannel
-  channel "sheets:*", TimesheetsWeb.SheetChannel
+  # channel "room:*", Timesheets2Web.RoomChannel
+  channel "sheets:*", Timesheets2Web.SheetChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -28,7 +28,7 @@ defmodule TimesheetsWeb.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     TimesheetsWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     Timesheets2Web.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

@@ -1,4 +1,4 @@
-# Timesheets - SPA
+# Timesheets2 - SPA
 
 Please access the application at time2.cs5610f19.website
 

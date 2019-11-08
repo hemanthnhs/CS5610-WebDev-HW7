@@ -1,5 +1,5 @@
-defmodule TimesheetsWeb.PageController do
-  use TimesheetsWeb, :controller
+defmodule Timesheets2Web.PageController do
+  use Timesheets2Web, :controller
 
   def index(conn, _params) do
     render(conn, "index.html")

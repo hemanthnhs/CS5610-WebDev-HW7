@@ -7,15 +7,15 @@
 # General application configuration
 use Mix.Config
 
-config :timesheets,
-  ecto_repos: [Timesheets.Repo]
+config :timesheets2,
+  ecto_repos: [Timesheets2.Repo]
 
 # Configures the endpoint
-config :timesheets, TimesheetsWeb.Endpoint,
+config :timesheets2, Timesheets2Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "0IdTk861s31vtW/vYYzUEPRn8vppvEdBALug4b78YBK7K5U/SNWGq6Y0QILKuuUG",
-  render_errors: [view: TimesheetsWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Timesheets.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: Timesheets2Web.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Timesheets2.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,

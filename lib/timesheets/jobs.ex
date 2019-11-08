@@ -1,12 +1,12 @@
-defmodule Timesheets.Jobs do
+defmodule Timesheets2.Jobs do
   @moduledoc """
   The Jobs context.
   """
 
   import Ecto.Query, warn: false
-  alias Timesheets.Repo
+  alias Timesheets2.Repo
 
-  alias Timesheets.Jobs.Job
+  alias Timesheets2.Jobs.Job
 
   @doc """
   Returns the list of jobs.

@@ -1,3 +1,3 @@
-defmodule TimesheetsWeb.LayoutViewTest do
-  use TimesheetsWeb.ConnCase, async: true
+defmodule Timesheets2Web.LayoutViewTest do
+  use Timesheets2Web.ConnCase, async: true
 end

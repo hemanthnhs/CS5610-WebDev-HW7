@@ -1,6 +1,6 @@
-defmodule Timesheets do
+defmodule Timesheets2 do
   @moduledoc """
-  Timesheets keeps the contexts that define your domain
+  Timesheets2 keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

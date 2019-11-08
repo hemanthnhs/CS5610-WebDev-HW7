@@ -5,14 +5,14 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Timesheets.Repo.insert!(%Timesheets.SomeSchema{})
+#     Timesheets2.Repo.insert!(%Timesheets2.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Timesheets.Repo
-alias Timesheets.Users.User
-alias Timesheets.Jobs.Job
+alias Timesheets2.Repo
+alias Timesheets2.Users.User
+alias Timesheets2.Jobs.Job
 
 Repo.insert!(%User{name: "manager1", email: "manager1@example.com", password_hash:  Argon2.add_hash("passwordmanager1").password_hash, is_manager: true})
 Repo.insert!(%User{name: "manager2", email: "manager2@example.com", password_hash:  Argon2.add_hash("passwordmanager2").password_hash, is_manager: true})

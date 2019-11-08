@@ -1,8 +1,8 @@
-defmodule TimesheetsWeb.JobControllerTest do
-  use TimesheetsWeb.ConnCase
+defmodule Timesheets2Web.JobControllerTest do
+  use Timesheets2Web.ConnCase
 
-  alias Timesheets.Jobs
-  alias Timesheets.Jobs.Job
+  alias Timesheets2.Jobs
+  alias Timesheets2.Jobs.Job
 
   @create_attrs %{
     desc: "some desc",

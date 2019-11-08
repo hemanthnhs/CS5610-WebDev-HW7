@@ -1,12 +1,12 @@
-defmodule Timesheets.Logs do
+defmodule Timesheets2.Logs do
   @moduledoc """
   The Logs context.
   """
 
   import Ecto.Query, warn: false
-  alias Timesheets.Repo
+  alias Timesheets2.Repo
 
-  alias Timesheets.Logs.Log
+  alias Timesheets2.Logs.Log
 
   def create_log(attrs \\ %{}) do
     %Log{}

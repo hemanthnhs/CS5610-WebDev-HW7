@@ -1,4 +1,4 @@
-defmodule TimesheetsWeb.ChannelCase do
+defmodule Timesheets2Web.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule TimesheetsWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint TimesheetsWeb.Endpoint
+      @endpoint Timesheets2Web.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timesheets.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timesheets2.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Timesheets.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Timesheets2.Repo, {:shared, self()})
     end
 
     :ok

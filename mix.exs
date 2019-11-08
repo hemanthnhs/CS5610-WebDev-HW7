@@ -1,9 +1,9 @@
-defmodule Timesheets.MixProject do
+defmodule Timesheets2.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :timesheets,
+      app: :timesheets2,
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Timesheets.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Timesheets.Application, []},
+      mod: {Timesheets2.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

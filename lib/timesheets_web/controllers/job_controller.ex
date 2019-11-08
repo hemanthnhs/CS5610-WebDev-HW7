@@ -1,10 +1,10 @@
-defmodule TimesheetsWeb.JobController do
-  use TimesheetsWeb, :controller
+defmodule Timesheets2Web.JobController do
+  use Timesheets2Web, :controller
 
-  alias Timesheets.Jobs
-  alias Timesheets.Jobs.Job
+  alias Timesheets2.Jobs
+  alias Timesheets2.Jobs.Job
 
-  action_fallback TimesheetsWeb.FallbackController
+  action_fallback Timesheets2Web.FallbackController
 
   def index(conn, _params) do
     jobs = Jobs.list_jobs()

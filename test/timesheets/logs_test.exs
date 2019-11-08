@@ -1,10 +1,10 @@
-defmodule Timesheets.LogsTest do
-  use Timesheets.DataCase
+defmodule Timesheets2.LogsTest do
+  use Timesheets2.DataCase
 
-  alias Timesheets.Logs
+  alias Timesheets2.Logs
 
   describe "logs" do
-    alias Timesheets.Logs.Log
+    alias Timesheets2.Logs.Log
 
     @valid_attrs %{desc: "some desc", hours: 120.5}
     @update_attrs %{desc: "some updated desc", hours: 456.7}
@@ -65,7 +65,7 @@ defmodule Timesheets.LogsTest do
   end
 
   describe "logs" do
-    alias Timesheets.Logs.Log
+    alias Timesheets2.Logs.Log
 
     @valid_attrs %{desc: "some desc", hours: 42}
     @update_attrs %{desc: "some updated desc", hours: 43}

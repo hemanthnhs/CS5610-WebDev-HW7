@@ -1,5 +1,5 @@
-defmodule TimesheetsWeb.PageControllerTest do
-  use TimesheetsWeb.ConnCase
+defmodule Timesheets2Web.PageControllerTest do
+  use Timesheets2Web.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
