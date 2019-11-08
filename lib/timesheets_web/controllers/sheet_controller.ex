@@ -28,7 +28,7 @@ defmodule TimesheetsWeb.SheetController do
       sheet = Sheets.get_sheet!(sheet.id)
       totalhours = Sheets.get_totalhours(sheet.id)
       if(totalhours < 8) do
-        TimesheetsWeb.SheetChannel.broadcast_msg(%{"manager_id" => conn.assigns[:current_user].supervisor_id})
+        TimesheetsWeb.SheetChannel.broadcast_msg(%{"manager_id" => conn.assigns[:current_user].supervisor_id, "user_name" => conn.assigns[:current_user].name, "workdate" => sheet.workdate, "sheet_id" => sheet.id})
       end
       render(conn, "show.json", sheet: sheet)
     end

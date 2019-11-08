@@ -70,8 +70,6 @@ defmodule Timesheets.Sheets do
 
   def get_totalhours(sheet_id) do
     sheet = Repo.get!(Sheet, sheet_id) |> Repo.preload([:logs])
-    IO.puts("************************************************")
-    IO.inspect(sheet.logs)
     total_hours = Enum.reduce(sheet.logs, 0, fn (l, total) -> total + l.hours end)
     total_hours
   end

@@ -1,8 +1,9 @@
 import React from 'react';
-
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import {Button, Table} from 'react-bootstrap';
 import { Redirect } from 'react-router';
+import { AlertList, Alert } from "react-bs-notifier";
 
 import {list_sheets, approve_sheet} from './ajax';
 import socket from "./socket";
@@ -25,8 +26,11 @@ class Dashboard extends React.Component {
                 .receive("error", resp => {
                     console.log("Unable to join", resp);
                 });
-            channel.on("new_sheet", function () {
-                console.log("New Sheet submitted")
+            channel.on("less_hours_alert", function (data) {
+                store.dispatch({
+                    type: 'NEW_ALERTS',
+                    data: data
+                });
             })
         }
     }
@@ -47,13 +51,25 @@ class Dashboard extends React.Component {
         });
     }
 
+    onAlertDismissed(alert) {
+        store.dispatch({
+            type: 'REMOVE_ALERT',
+            data: alert
+        });
+    }
+
     render() {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
         }
 
-        let {id, sheets, is_manager} = this.props
-        console.log("dashboard sheets--",Array.from(sheets.keys()))
+        let {id, sheets, is_manager, supervisor_id, alerts} = this.props
+        let alert_display = null
+
+        if(alerts!=""){
+            alert_display = <AlertList timeout={15000} onDismiss={this.onAlertDismissed.bind(this)} alerts={alerts} />
+        }
+
         var display_rows = []
         var that = this
 
@@ -72,6 +88,7 @@ class Dashboard extends React.Component {
 
         return (
             <div>
+                {alert_display}
                 <h1>Dashboard</h1>
                 {(sheets.size != 0) ?
                 <Table striped hover>
@@ -94,7 +111,8 @@ class Dashboard extends React.Component {
 }
 
 function state2props(state) {
-    return {id: state.session.user_id, sheets: state.sheets, is_manager: state.session.is_manager, supervisor_id: state.session.supervisor_id};
+    console.log("state-----------------------", state)
+    return {id: state.session.user_id, sheets: state.sheets, is_manager: state.session.is_manager, supervisor_id: state.session.supervisor_id, alerts: state.alerts};
 }
 
 export default connect(state2props)(Dashboard);

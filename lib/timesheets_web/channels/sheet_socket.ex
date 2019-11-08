@@ -10,9 +10,11 @@ defmodule TimesheetsWeb.SheetChannel do
       {:ok, %{"join" => name}, socket}
   end
 
-  def broadcast_msg(%{"manager_id" => manager_id}) do
+  def broadcast_msg(%{"manager_id" => manager_id, "user_name" => user_name, "workdate" => workdate, "sheet_id" => sheet_id}) do
+    IO.puts("Broadcastttttttt==============")
     socket = BackupAgent.get(manager_id)
-    TimesheetsWeb.Endpoint.broadcast(socket.topic, "new_sheet", %{})
+    message = "#{user_name} has submitted timesheet for #{workdate} with less than 8 hours"
+    TimesheetsWeb.Endpoint.broadcast(socket.topic, "less_hours_alert" , %{sheet_id: sheet_id, message: message})
   end
 
 end

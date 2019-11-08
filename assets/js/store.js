@@ -84,6 +84,21 @@ function jobs(st0 = new Map(), action) {
     }
 }
 
+function alerts(st0 = [{id: 1, type: "warning", message: "Test Alert"}], action) {
+    switch (action.type) {
+        case 'NEW_ALERTS':
+            var st1 = st0.slice(0)
+            st1.push({type: "warning", id: action.data["sheet_id"], message: action.data["message"]})
+            return st1;
+        case 'REMOVE_ALERT':
+            var st1 = st0
+            let id = st1.indexOf(action.data);
+            return [...st1.slice(0, id), ...st1.slice(id + 1)]
+        default:
+            return st0;
+    }
+}
+
 function forms(st0, action) {
     let reducer = combineReducers({
         new_timesheet,
@@ -113,6 +128,7 @@ function root_reducer(st0, action) {
         session,
         sheets,
         jobs,
+        alerts,
     });
     return deepFreeze(reducer(st0, action));
 }
