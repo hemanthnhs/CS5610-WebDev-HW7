@@ -6,7 +6,7 @@ Type=simple
 User=timesheets2
 Group=timesheets2
 Restart=on-failure
-Environment=MIX_ENV=prod "PORT=5001"
+Environment=MIX_ENV=prod "PORT=5002"
 Environment=LANG=en_US.UTF-8
 
 WorkingDirectory=/home/timesheets2/CS5610-WebDev-HW7
