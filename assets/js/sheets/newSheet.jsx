@@ -5,8 +5,7 @@ import {connect} from 'react-redux';
 import {Form, Button, Table, Alert} from 'react-bootstrap';
 
 function state2props(state) {
-    console.log("state", state)
-    return {form: state.forms.new_timesheet, jobs: state.jobs};
+    return {form: state.forms.new_timesheet, jobs: state.jobs, logged: !(state.session==null)};
 }
 
 class NewSheet extends React.Component {
@@ -21,9 +20,10 @@ class NewSheet extends React.Component {
         this.props.dispatch({
             type: 'NEW_FORM',
         });
-
-        list_jobs()
-        this.select_date = this.select_date.bind(this)
+        if(props.logged) {
+            list_jobs()
+            this.select_date = this.select_date.bind(this)
+        }
     }
 
     redirect(path) {
@@ -67,6 +67,9 @@ class NewSheet extends React.Component {
     render() {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />;
+        }
+        if(!this.props.logged){
+            return (<div>Please login to access</div>)
         }
         let {workdate, num_of_tasks, logs_data, errors, dispatch} = this.props.form;
         let error_display = null

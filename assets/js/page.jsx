@@ -95,7 +95,7 @@ let Navigation = connect(({session}) => ({session}))(({session}) => {
 
 let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
     function logout(ev) {
-        ev.preventDefault();
+        // ev.preventDefault();
         localStorage.removeItem('session');
         dispatch({
             type: 'LOG_OUT',
@@ -108,7 +108,9 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
                     <p className="text-light py-2">User: {session.user_name}</p>
                 </Nav.Item>
                 <Nav.Item>
-                    <a className="nav-link" href="#" onClick={logout}>Logout</a>
+                    <NavLink to="/" exact onClick={logout} activeClassName="active" className="nav-link">
+                        Loutout
+                    </NavLink>
                 </Nav.Item>
             </Nav>
         );

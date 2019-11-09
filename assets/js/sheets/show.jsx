@@ -3,19 +3,31 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Table, Button} from 'react-bootstrap';
 import {get_sheet, approve_sheet, list_sheets} from '../ajax';
+import { Redirect } from 'react-router';
 import {get_channel, join_channel} from "../channel";
 import {AlertList} from "react-bs-notifier";
 import store from "../store";
 
 function state2props(state, props) {
     let id = parseInt(props.id);
-    return {
-        id: id,
-        sheet: state.sheets.get(id),
-        user_id: state.session.user_id,
-        is_manager: state.session.is_manager,
-        alerts: state.alerts
-    };
+    if(state.session == null){
+        return {
+            id: null,
+            sheet: null,
+            user_id: null,
+            is_manager: null,
+            alerts: null
+        };
+    }
+    else{
+        return {
+            id: id,
+            sheet: state.sheets.get(id),
+            user_id: state.session.user_id,
+            is_manager: state.session.is_manager,
+            alerts: state.alerts
+        };
+    }
 }
 
 class ShowSheet extends React.Component {
@@ -34,7 +46,9 @@ class ShowSheet extends React.Component {
             }
         }
 
-        get_sheet(props.id)
+        if(props.user_id != null){
+            get_sheet(props.id)
+        }
     }
 
     redirect(path) {
@@ -50,6 +64,9 @@ class ShowSheet extends React.Component {
 
     render() {
         let {id, sheet, is_manager, user_id, alerts} = this.props;
+        if(user_id == null){
+            return (<div>Please login to access</div>)
+        }
         let alert_display = null
 
         if (alerts != "") {

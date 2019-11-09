@@ -11,8 +11,6 @@ defmodule Timesheets2Web.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    IO.puts("=======================================")
-    IO.inspect(user)
     %{id: user.id,
       email: user.email,
       name: user.name,
