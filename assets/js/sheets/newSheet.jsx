@@ -31,7 +31,6 @@ class NewSheet extends React.Component {
     }
 
     select_date(ev) {
-        console.log(ev.target.value)
         this.props.dispatch({
             type: 'SELECT_DATE',
             data: ev.target.value,
@@ -39,7 +38,6 @@ class NewSheet extends React.Component {
     }
 
     change_task_data(ev, updated_key){
-        console.log("for task", ev.target.id,"job",ev.target.value)
         this.props.dispatch({
             type: 'CHANGE_TASK_DATA',
             id: ev.target.id,

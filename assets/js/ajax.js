@@ -5,7 +5,6 @@ import socket from "./socket"
 export function post(path, body) {
     let state = store.getState();
     let token = state.session ? state.session.token || "" : "";
-    console.log("body",body)
 
     return fetch('/ajax' + path, {
         method: 'post',
@@ -41,7 +40,6 @@ export function get(path) {
 export function approve_sheet(id){
     post('/approve', {id: id})
         .then((resp) => {
-            console.log("resp",resp)
             store.dispatch({
                 type: 'CHANGE_SHEET',
                 data: [resp.data],
@@ -54,7 +52,6 @@ export function submit_login(form) {
     let data = state.forms.login;
     post('/sessions', data)
         .then((resp) => {
-            console.log("resp",resp)
             if (resp.token) {
                 localStorage.setItem('session', JSON.stringify(resp));
                 store.dispatch({
@@ -64,7 +61,6 @@ export function submit_login(form) {
                 form.redirect('/');
             }
             else {
-                console.log("resp",resp)
                 store.dispatch({
                     type: 'CHANGE_LOGIN',
                     data: {errors: JSON.stringify(resp.errors)},
@@ -76,7 +72,6 @@ export function submit_login(form) {
 export function list_sheets() {
     get('/sheets')
         .then((resp) => {
-            console.log("list_sheets", resp);
             store.dispatch({
                 type: 'CHANGE_SHEET',
                 data: resp.data,
@@ -87,7 +82,6 @@ export function list_sheets() {
 export function list_jobs() {
     get('/jobs')
         .then((resp) => {
-            console.log("list_jobs", resp);
             store.dispatch({
                 type: 'ADD_JOBS',
                 data: resp.data,
@@ -136,8 +130,6 @@ export function submit_time_sheet(form) {
     let user_id = state.session.user_id;
     let errors = {}
 
-    console.log("data",data)
-
     if (data.workdate == null) {
         errors["date"] = "Work Date cannot be empty."
     }else{
@@ -152,7 +144,6 @@ export function submit_time_sheet(form) {
         errors["rows"] = "Please enter both hours and jobcode for atleast one task"
     }else{
         if ( total_hours > 8) {
-            console.log("total hours", total_hours)
             errors["hours"] = "Total hours cannot exceed 8"
         } else if(total_hours == 0){
             errors["hours"] = "Minimum of 1 hour should be entered"
@@ -169,7 +160,6 @@ export function submit_time_sheet(form) {
     post('/sheets', {
         sheet: format_form_data(data, user_id)
     }).then((resp) => {
-        console.log(resp);
         if (resp.data) {
             form.redirect('/sheets/' + resp.data.id);
         }else{

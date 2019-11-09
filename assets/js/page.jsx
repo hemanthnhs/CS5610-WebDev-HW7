@@ -109,7 +109,7 @@ let Session = connect(({session}) => ({session}))(({session, dispatch}) => {
                 </Nav.Item>
                 <Nav.Item>
                     <NavLink to="/" exact onClick={logout} activeClassName="active" className="nav-link">
-                        Loutout
+                        Logout
                     </NavLink>
                 </Nav.Item>
             </Nav>

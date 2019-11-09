@@ -24,9 +24,7 @@ function sheets(st0 = new Map(), action) {
 }
 
 function row_update(st0, action, field){
-    console.log("came")
     let parsedId = parseInt(action.id)
-    console.log("state",st0)
     var updated_rows = new Map(st0.logs);
     var changing_row = updated_rows.get(parsedId);
     switch (action.updated_key) {
