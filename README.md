@@ -19,6 +19,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 ## Attributions and References
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
 * Major attribution, reference and code is from Nats Notes : https://github.com/NatTuck/lens/tree/spa4-user-sessions (SPA's, session's, ajax, store)
+* Lens example https://github.com/NatTuck/lens/blob/spa4-user-sessions
 * Reference https://daveceddia.com/how-does-redux-work/
 * https://stackoverflow.com/questions/5805059/how-do-i-make-a-placeholder-for-a-select-box
 * https://stackoverflow.com/questions/8215556/how-to-check-if-input-date-is-equal-to-todays-date
@@ -28,6 +29,10 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 * https://elixirforum.com/t/map-filter-and-reduce/1219
 * https://chadly.github.io/react-bs-notifier/
 * https://stackoverflow.com/questions/7000851/array-sort-doesnt-sort-numbers-correctly
+* Stackoverflow discussions related to map and return
+* Redirect ReactDOM docs
+* Channel subscription https://piazza.com/class/k03dspgc6oo42p?cid=248
+* React Bootstrap docs
 
 ## Design Decisions
 * In addition to https://github.com/hemanthnhs/CS5610-WebDev-HW6
@@ -42,6 +47,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 * Only completed/filled tasks(i.e with jobcode and hours) are saved
 * Blank rows are allowed and handled.
 * Alert to manager when a user submits timesheet less than 8 hours will be timedout in 15s or on dismiss.
+* The requests will be seen by manager immediately and approved status will reflect immediately for the worker
 
 ## Sample Data to login
 

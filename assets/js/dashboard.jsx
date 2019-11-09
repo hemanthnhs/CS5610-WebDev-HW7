@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
         var that = this
         Array.from(sheets.keys()).sort(function(a,b) { return b - a; }).map(function (sheet_id, index) {
             let sheet = sheets.get(sheet_id)
-            display_rows.push(<tr>
+            display_rows.push(<tr key={sheet_id}>
                 {is_manager ? <td>{sheet.user_name}</td> : null}
                 <td>{sheet.workdate}</td>
                 <td>{sheet.approved ? "Approved" : "Pending Approval"}</td>

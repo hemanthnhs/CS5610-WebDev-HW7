@@ -105,7 +105,7 @@ class ShowSheet extends React.Component {
                     <tbody>
                     {
                         sheet.logs.map(function (log, ind) {
-                            return (<tr>
+                            return (<tr key={ind+1}>
                                 <td>{ind + 1}</td>
                                 <td>{log.jobcode}</td>
                                 <td>{log.hours}</td>
