@@ -19,7 +19,7 @@
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9",
+    "webpack-cli": "^3.3.12",
     "react-bs-notifier": "^5.0.0"
   },
   "devDependencies": {
